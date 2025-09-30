@@ -1,41 +1,45 @@
 <template>
-  <v-app>
-    <v-main class="welcome-page">
-      <!-- Theme Toggle Icon -->
-      <div class="theme-toggle" @click="toggleTheme">
-        <img :src="currentIcon" alt="Toggle Theme" />
-      </div>
-
-      <v-container class="welcome-container" fluid>
-        <h1 class="title" :style="titleStyle">
-          Welcome to My Portfolio
-        </h1>
-
-        <div class="button-group">
-          <v-btn :style="guestBtnStyle" @click="goGuest">Guest</v-btn>
-          <v-btn :style="adminBtnStyle" @click="showAdminPopup = true">Admin</v-btn>
+  <div v-if="isMounted">
+    <v-app>
+      <v-main class="welcome-page">
+        <!-- Theme Toggle Icon -->
+        <div class="theme-toggle" @click="toggleTheme">
+          <img :src="currentIcon" alt="Toggle Theme" />
         </div>
-      </v-container>
 
-      <!-- Admin Popup -->
-      <div v-if="showAdminPopup" class="popup-overlay">
-        <div class="popup-card" :class="{ dark: theme.global.current.value.dark }">
-          <button class="close-btn" @click="showAdminPopup = false">×</button>
-          <h2>Admin Access</h2>
-          <input
-            type="password"
-            v-model="adminPassword"
-            placeholder="Enter password"
-          />
-          <v-btn class="submit-btn" @click="submitAdmin">Enter</v-btn>
+        <v-container class="welcome-container" fluid>
+          <h1 class="title" :style="titleStyle">
+            Welcome to My Portfolio
+          </h1>
+
+          <div class="button-group">
+            <v-btn :style="guestBtnStyle" @click="goGuest">Guest</v-btn>
+            <v-btn :style="adminBtnStyle" @click="showAdminPopup = true">Admin</v-btn>
+          </div>
+        </v-container>
+
+        <!-- Admin Popup -->
+        <div v-if="showAdminPopup" class="popup-overlay">
+          <div class="popup-card" :class="{ dark: theme.global.current.value.dark }">
+            <button class="close-btn" @click="showAdminPopup = false">×</button>
+            <h2>Admin Access</h2>
+            <input
+              type="password"
+              v-model="adminPassword"
+              placeholder="Enter password"
+            />
+            <v-btn class="submit-btn" @click="submitAdmin">Enter</v-btn>
+          </div>
         </div>
-      </div>
-    </v-main>
-  </v-app>
+      </v-main>
+    </v-app>
+  </div>
 </template>
 
+
+
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'
 
@@ -45,6 +49,11 @@ import darkIcon from '~/assets/dark.svg'
 
 const router = useRouter()
 const theme = useTheme()
+
+const isMounted = ref(false)
+onMounted(() => {
+  isMounted.value = true
+})
 
 const currentIcon = computed(() =>
   theme.global.current.value.dark ? darkIcon : lightIcon
@@ -87,6 +96,8 @@ const buttonGradient = computed(() =>
 const guestBtnStyle = computed(() => ({ backgroundImage: buttonGradient.value, color: '#fff' }))
 const adminBtnStyle = computed(() => ({ backgroundImage: buttonGradient.value, color: '#fff' }))
 </script>
+
+
 
 <style scoped>
 /* --- Page --- */
@@ -296,90 +307,127 @@ const adminBtnStyle = computed(() => ({ backgroundImage: buttonGradient.value, c
 
 /* --- Fully Responsive Layout --- */
 
-/* Large tablets / smaller desktops */
-@media (max-width: 1024px) {
-  .button-group {
-    flex-direction: row;
-    justify-content: center;
-    gap: 1rem;
-  }
-  .v-btn {
-    padding: 1.8rem 3rem;
-    font-size: 1.5rem;
-  }
-  .title { font-size: 3.8rem; margin-bottom: 1.8rem; }
-  .welcome-container { gap: 0; margin-top: 6vh; }
-  .theme-toggle { width: 70px; height: 70px; }
-  .popup-card { width: 85%; padding: 2.5rem 2rem; }
-  .popup-card input { margin-bottom: 1rem; }
-  .submit-btn { margin-top: 0; }
-}
-
-/* Tablets / small laptops */
-@media (max-width: 768px) {
-  .button-group {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 0.8rem;
-  }
-  .v-btn {
-    width: 80%;
-    max-width: 280px;
-    padding: 1.8rem 2.5rem;
-    font-size: 1.45rem;
-  }
-  .title { font-size: 3rem; line-height: 1.2; margin-bottom: 1.2rem; }
-  .welcome-container { gap: 0; margin-top: 5vh; }
-  .theme-toggle { width: 60px; height: 60px; }
-  .popup-card { width: 85%; padding: 2.2rem 2rem; }
-  .popup-card h2 { font-size: 1.8rem; margin-bottom: 1rem; }
-  .popup-card input { font-size: 1.3rem; padding: 1rem 1.2rem; margin-bottom: 0.8rem; }
-  .submit-btn { font-size: 1.4rem; padding: 1.2rem 0; margin-top: 0.4rem; }
-}
-
-/* Mobile phones */
-@media (max-width: 480px) {
-  .button-group {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem; /* tight spacing between buttons */
-  }
-  .v-btn {
-    width: 85%;
-    max-width: 240px;
-    padding: 1.5rem 2rem;
-    font-size: 1.35rem;
-  }
-  .title {
-    font-size: 2.3rem;
-    line-height: 1.2;
-    margin-top: 1rem; /* reduced from 2rem */
-    margin-bottom: 0.5rem; /* added to bring buttons closer */
-  }
-  .welcome-container {
-    gap: 0;
-    margin-top: 4vh; /* slightly less to move everything up */
-  }
-  .theme-toggle { width: 50px; height: 50px; }
+/* --- Large desktop / TV screens --- */
+@media (min-width: 1600px) {
   .popup-card {
-    width: 90%;
-    padding: 1.8rem 1.6rem;
+    width: 45%;             /* card width */
+    max-width: 800px;       /* prevent over-stretching */
+    padding: 2.5rem 2.5rem;   /* tight enough padding */
+    display: flex;
+    flex-direction: column;
+    align-items: center;    /* center all children */
   }
+
   .popup-card h2 {
-    font-size: 1.6rem;
-    margin-bottom: 0.8rem;
+    margin-bottom: 1rem;
+    font-size: 2.2rem;
+    text-align: center;
   }
+
   .popup-card input {
-    font-size: 1.2rem;
-    padding: 0.9rem 1rem;
-    margin-bottom: 0.6rem;
+    width: 100%;
+    max-width: 400px;       /* nice input length */
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1rem;    /* spacing to button */
+    font-size: 1.25rem;
+    box-sizing: border-box;
   }
+
   .submit-btn {
-    font-size: 1.3rem;
-    padding: 1rem 0;
-    margin-top: 0.3rem;
+    width: 100%;
+    max-width: 400px;       /* match input width */
+    padding: 1.5rem 0;      /* taller button for comfort */
+    font-size: 1.5rem;
+    margin: 0;               /* remove weird spacing */
+    display: flex;
+    justify-content: center; /* center text horizontally */
+    align-items: center;     /* center text vertically */
+    border-radius: 18px;     /* slightly rounder */
+  }
+}
+
+
+/* --- Mid-range screens: 768px to 1280px --- */
+@media (min-width: 768px) and (max-width: 1280px) {
+  /* Buttons */
+  .v-btn {
+    width: 85%;          /* slightly wider */
+    max-width: 320px;    /* allow for readable buttons */
+    padding: 2rem 2.5rem;
+    font-size: 1.55rem;  /* bigger font */
+  }
+
+  /* Title */
+  .title {
+    font-size: 3.5rem;   /* easier to read */
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Popup card */
+  .popup-card {
+    width: 50%;          /* wider for mid screens */
+    max-width: 600px;
+    padding: 2.5rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Popup title */
+  .popup-card h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  /* Input */
+  .popup-card input {
+    width: 100%;
+    max-width: 400px;    /* match button width */
+    padding: 1.2rem 1.5rem;
+    font-size: 1.35rem;
+    margin-bottom: 1rem; /* reduced gap to submit button */
+    box-sizing: border-box;
+  }
+
+  /* Submit button */
+  .submit-btn {
+    width: 100%;
+    max-width: auto;    /* same as input */
+    padding: 1.5rem 0;
+    font-size: 1.5rem;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 18px;
+  }
+}
+
+/* --- Small mobile screens: 344px to 390px --- */
+@media (max-width: 390px) {
+  .popup-card input,
+  .submit-btn {
+    width: 95%;           /* keep inside popup */
+    max-width: 100%;      /* prevent overflow */
+  }
+
+  .submit-btn {
+    font-size: 1.25rem;   /* slightly smaller font for fit */
+    padding: 1rem 0;      /* adjust padding */
+    margin-top: 0.4rem;   /* reduce gap to input */
+  }
+}
+
+/* --- Mid-small screens: around 540px --- */
+@media (min-width: 500px) and (max-width: 580px) {
+  .popup-card input {
+    margin-bottom: 0.5rem; /* tighten gap to submit button */
+  }
+
+  .submit-btn {
+    margin-top: 0.3rem;    /* small space above button */
   }
 }
 
@@ -442,8 +490,5 @@ const adminBtnStyle = computed(() => ({ backgroundImage: buttonGradient.value, c
     margin-top: 0.3rem;
   }
 }
-
-
-
 
 </style>
