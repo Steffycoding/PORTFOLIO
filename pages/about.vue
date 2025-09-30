@@ -23,19 +23,10 @@
           <h1 class="title">About Me</h1>
           <div class="intro-text">
             <p>
-              <span class="highlight">Hi, I'm an aspiring web developer</span> who thrives on <span class="highlight">challenges</span>.
-            </p>
-            <p>
-              I love crafting <span class="highlight">clean, intuitive, and user-friendly interfaces</span> that make a <span class="highlight">real impact</span>.
-            </p>
-            <p>
-              Currently, I’m exploring <span class="highlight">UI/UX design with FIGMA</span> to enhance my <span class="highlight">creative workflow</span>.
-            </p>
-            <p>
-              My goal is to continuously grow, gain knowledge, and sharpen both my <span class="highlight">technical and soft skills</span>.
-            </p>
-            <p>
-              Please find my personal information conveniently on the <span class="highlight">sidebar</span> to the left.
+              <span class="highlight">* Hi, I'm an aspiring web developer</span>. <br> * I love tackling projects that push me to learn more and create <span class="highlight">clean, intuitive interfaces</span> is my jam. <br>* I often experiment with new ideas just to see where they lead.  
+              <br> * Lately, I’ve been exploring <span class="highlight">UI/UX design with FIGMA</span>, because even the smallest shift in layout or color can change how something feels to a user. <br> * I’m always learning, tweaking, and refining.  
+              <br> * Beyond coding, I’m drawn to <span class="highlight">human-centered design</span>, thinking about how technology truly connects with people. <br> * My goal is simple: keep growing, exploring, and creating things that matter.  
+              <br> * If you’re curious, you’ll find all my personal and professional details right on the <span class="highlight">sidebar</span> to the left.
             </p>
           </div>
         </div>
@@ -43,6 +34,7 @@
     </v-main>
   </v-app>
 </template>
+
 
 <script setup lang="ts">
 import { computed } from 'vue'
@@ -65,7 +57,6 @@ function toggleTheme() {
 </script>
 
 <style scoped>
-/* Overall page */
 .about-page {
   display: flex;
   justify-content: flex-start;
@@ -73,17 +64,15 @@ function toggleTheme() {
   background: var(--v-theme-background);
   color: var(--v-theme-surface);
   font-family: 'Inter', 'Roboto', sans-serif;
-  padding-top: 6vh;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
-/* Theme toggle */
 .theme-toggle {
   position: fixed;
   top: 1.5vh;
   left: 1.5vw;
   width: clamp(50px, 6vw, 90px);
-  z-index: 1100; /* above sidebar */
+  z-index: 1100;
   cursor: pointer;
 }
 .theme-toggle img {
@@ -94,7 +83,6 @@ function toggleTheme() {
   transition: transform 0.2s ease;
 }
 
-/* Container */
 .about-container {
   display: flex;
   flex-direction: row;
@@ -102,103 +90,134 @@ function toggleTheme() {
   max-width: 1400px;
   margin: 0 auto;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
+  height: 100vh;
 }
 
-/* Sidebar */
 .sidebar {
-  width: 320px;
+  width: clamp(250px, 22%, 330px); /* fluid width for small to XL */
   min-height: 100vh;
-  background: var(--v-theme-surface);
+  background: rgba(var(--v-theme-background-rgb), 0.25);
+  backdrop-filter: blur(10px);
   border-radius: 0 1.5rem 1.5rem 0;
-  box-shadow: 4px 0 25px rgba(0,0,0,0.15);
-  padding: 6rem 2rem 2rem 2rem; /* extra top space to avoid toggle overlap */
+  box-shadow: 2px 0 20px rgba(0,0,0,0.15);
+  padding: clamp(8rem, 10%, 12rem) 2rem 2rem 2rem; /* fluid top padding */
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 500;
 }
 
-/* Sidebar buttons */
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 1.8rem;
+  gap: clamp(2rem, 2.5%, 3.5rem); /* fluid gap scaling */
 }
 
 .sidebar-btn {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1.6rem 0;
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #f0f0f0;
-  background: #2a2a2a;
-  border-left: 5px solid transparent;
+  padding: clamp(1rem, 1.5vw, 1.7rem) 0;
+  font-size: clamp(1.3rem, 1.5vw, 1.7rem);
+  font-weight: 500;
+  color: var(--v-theme-surface);
+  background: rgba(var(--v-theme-background-rgb), 0.15);
+  border-left: 4px solid transparent;
   border-radius: 12px;
   text-decoration: none;
-  transition: all 0.25s ease;
+  transition: all 0.25s ease, box-shadow 0.3s ease, transform 0.2s ease;
 }
 .sidebar-btn:hover {
-  background: #1f1f1f;
-  border-left: 5px solid #E78F0A;
-  transform: translateX(4px);
+  background: rgba(231, 143, 10, 0.15);
+  border-left: 4px solid #E78F0A;
+  transform: translateX(3px);
+  box-shadow: 1px 3px 12px rgba(0,0,0,0.25);
 }
 .sidebar-btn.active {
-  background: #1f1f1f;
-  border-left: 5px solid #E78F0A;
+  background: rgba(231, 143, 10, 0.2);
+  border-left: 4px solid #E78F0A;
   color: #fff;
+  box-shadow: 1px 3px 15px rgba(0,0,0,0.3);
 }
 
-/* Main content */
 .main-content {
-  margin-left: 340px; /* offset for wider sidebar */
+  margin-left: clamp(280px, 25%, 350px); /* fluid margin for different screens */
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2.8rem;
-  padding: 4rem;
-  justify-content: center;
-  text-align: center;
+  gap: clamp(1rem, 1.5%, 1.5rem);
+  padding: clamp(1.5rem, 2vw, 3rem) clamp(2rem, 3vw, 4rem);
+  align-items: flex-start;
+  text-align: left;
+  min-height: 100vh;
+  overflow-y: auto;
 }
 
-/* Titles & text */
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .title {
-  font-size: clamp(4rem, 6vw, 5.2rem);
+  font-size: clamp(2.5rem, 5vw, 4.8rem);
   font-weight: 900;
-  color: #E78F0A;
-  margin-bottom: 2rem;
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
   font-family: 'Poppins', 'Inter', sans-serif;
+  background: linear-gradient(90deg, #E78F0A, #13AEFB, #E78F0A);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+  animation: gradientAnimation 6s ease infinite;
+}
+
+.intro-text {
+  font-size: clamp(1.2rem, 1.5vw, 2rem);
+  line-height: clamp(1.6, 2vw, 2.2);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: left;
 }
 
 .intro-text p {
-  font-size: clamp(1.55rem, 1.85vw, 1.9rem);
-  line-height: 2.1;
-  margin-bottom: 1.8rem;
-  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.3px;
+  word-spacing: 1.4px;
 }
 
 .highlight {
   color: #E78F0A;
-  font-weight: 800;
-  font-size: 1.15em;
+  font-weight: 600;
+  font-size: clamp(1em, 1.02vw, 1.03em);
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
+/* Small adjustments for tiny screens */
+@media (max-width: 480px) {
   .sidebar {
-    position: relative;
-    width: 90%;
-    border-radius: 1.5rem;
-    padding: 3rem 1.5rem;
-    top: 0;
+    width: 250px;
+    padding-top: 6rem;
   }
   .main-content {
-    margin-left: 0;
-    padding: 2rem;
+    margin-left: 250px;
+    padding: 1rem 1.5rem;
+  }
+  .title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  .intro-text {
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+  .sidebar-btn {
+    font-size: 1.2rem;
+    padding: 0.8rem 0;
   }
 }
 </style>
