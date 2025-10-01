@@ -72,7 +72,7 @@ const adminPassword = ref('')
 
 function submitAdmin() {
   if (adminPassword.value === 'theloop') {
-    router.push('/admin')
+    router.push('/about')
     showAdminPopup.value = false
   } else {
     alert('Incorrect password!')

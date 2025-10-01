@@ -415,5 +415,8 @@ function toggleTheme() {
   }
 }
 
-
+.error-text {
+  color: red;
+  font-size: 0.9rem;
+}
 </style>
