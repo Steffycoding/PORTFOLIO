@@ -2,10 +2,8 @@
   <div v-if="isMounted">
     <v-app>
       <v-main class="welcome-page">
-        <!-- Theme Toggle Icon -->
-        <div class="theme-toggle" @click="toggleTheme">
-          <img :src="currentIcon" alt="Toggle Theme" />
-        </div>
+        <!-- Theme Toggle Component -->
+        <ThemeToggle />
 
         <v-container class="welcome-container" fluid>
           <h1 class="title" :style="titleStyle">
@@ -36,16 +34,11 @@
   </div>
 </template>
 
-
-
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'
-
-// SVGs
-import lightIcon from '~/assets/light.svg'
-import darkIcon from '~/assets/dark.svg'
+import ThemeToggle from '~/components/ThemeToggle.vue'
 
 const router = useRouter()
 const theme = useTheme()
@@ -53,15 +46,8 @@ const theme = useTheme()
 const isMounted = ref(false)
 onMounted(() => {
   isMounted.value = true
+  // Removed automatic redirect on page load
 })
-
-const currentIcon = computed(() =>
-  theme.global.current.value.dark ? darkIcon : lightIcon
-)
-
-function toggleTheme() {
-  theme.global.current.value.dark ? theme.change('light') : theme.change('dark')
-}
 
 function goGuest() {
   router.push('/about')
@@ -70,14 +56,25 @@ function goGuest() {
 const showAdminPopup = ref(false)
 const adminPassword = ref('')
 
+// Admin login
 function submitAdmin() {
   if (adminPassword.value === 'theloop') {
-    router.push('/about')
+    // Set admin session
+    localStorage.setItem('isAdmin', 'true')
+
+    // Redirect to admin page after successful login
+    router.push('/aboutadmin')
     showAdminPopup.value = false
   } else {
     alert('Incorrect password!')
     adminPassword.value = ''
   }
+}
+
+// Logout (to call from admin page)
+function logoutAdmin() {
+  localStorage.removeItem('isAdmin')
+  router.push('/') // back to welcome page
 }
 
 const titleStyle = computed(() => ({
@@ -93,9 +90,16 @@ const buttonGradient = computed(() =>
     : 'linear-gradient(145deg, #0057FF, #E78F0A)'
 )
 
-const guestBtnStyle = computed(() => ({ backgroundImage: buttonGradient.value, color: '#fff' }))
-const adminBtnStyle = computed(() => ({ backgroundImage: buttonGradient.value, color: '#fff' }))
+const guestBtnStyle = computed(() => ({
+  backgroundImage: buttonGradient.value,
+  color: '#fff',
+}))
+const adminBtnStyle = computed(() => ({
+  backgroundImage: buttonGradient.value,
+  color: '#fff',
+}))
 </script>
+
 
 
 
@@ -114,22 +118,6 @@ const adminBtnStyle = computed(() => ({ backgroundImage: buttonGradient.value, c
   overflow: hidden; /* prevent scrolling */
 }
 
-/* Icon */
-.theme-toggle {
-  position: absolute;
-  top: 1.5vh;
-  left: 1.5vw;
-  width: clamp(50px, 6vw, 90px);
-  height: auto;
-  cursor: pointer;
-  z-index: 1000;
-  transition: transform 0.2s ease;
-}
-.theme-toggle img {
-  width: 100%;
-  height: auto;
-}
-.theme-toggle:hover { transform: scale(1.12); }
 
 /* Container */
 .welcome-container {
