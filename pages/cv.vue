@@ -1,11 +1,3 @@
-<script setup>
-import Sidebar from '~/components/Sidebar.vue'
-import ThemeToggle from '~/components/ThemeToggle.vue'
-import { useCV } from '~/composables/useCV'
-
-const { cvData } = useCV()
-</script>
-
 <template>
   <v-app>
     <v-main class="cv-page">
@@ -64,6 +56,17 @@ const { cvData } = useCV()
     </v-main>
   </v-app>
 </template>
+
+
+<script setup>
+import Sidebar from '~/components/Sidebar.vue'
+import ThemeToggle from '~/components/ThemeToggle.vue'
+import { useCV } from '~/composables/useCV'
+
+const { cvData } = useCV()
+</script>
+
+
 
 
 <style scoped>

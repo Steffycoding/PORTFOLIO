@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-page">
+  <div v-if="mounted" class="admin-page">
     <!-- Sidebar -->
     <SidebarAdmin />
 
@@ -11,6 +11,10 @@
       <div class="popup-card">
         <!-- Page Title -->
         <h1 class="page-heading">Contact Me:</h1>
+
+        <!-- Image upload input -->
+        <label for="upload" class="upload-label">Upload New Image</label>
+        <input id="upload" type="file" accept="image/*" @change="onFileChange" class="upload-input" />
 
         <!-- Display profile picture -->
         <img :src="profilePic" class="profile-pic" alt="Profile Picture" />
@@ -26,14 +30,36 @@
   </div>
 </template>
 
-
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import SidebarAdmin from '~/components/AdminSidebar.vue'
 import ThemeToggle from '~/components/ThemeToggle.vue'
+import { useTheme } from 'vuetify'
 
 const profilePic = ref('/images/me.jpg')
+const mounted = ref(false)
+const theme = useTheme()
 
+function onFileChange(e: Event) {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (file) {
+    const reader = new FileReader()
+    reader.onload = (event) => {
+      profilePic.value = event.target?.result as string
+    }
+    reader.readAsDataURL(file)
+  }
+}
+
+onMounted(() => {
+  // Ensure we only access localStorage in the browser
+  if (typeof window !== 'undefined') {
+    const savedTheme = localStorage.getItem('theme') || 'light'
+    theme.global.name.value = savedTheme
+    document.body.classList.toggle('dark-mode', savedTheme === 'dark')
+  }
+  mounted.value = true
+})
 </script>
 
 <style scoped>

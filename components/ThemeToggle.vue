@@ -5,25 +5,41 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useTheme } from 'vuetify'
 import lightIcon from '~/assets/light.svg'
 import darkIcon from '~/assets/dark.svg'
 
 const theme = useTheme()
+const currentTheme = ref('light') // default
 
-const currentIcon = computed(() =>
-  theme.global.current.value.dark ? darkIcon : lightIcon
-)
+// Only access localStorage in browser
+onMounted(() => {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    const savedTheme = localStorage.getItem('theme') || 'light'
+    currentTheme.value = savedTheme
+    theme.global.name.value = savedTheme
+    document.body.classList.toggle('dark-mode', savedTheme === 'dark')
+  }
+})
+
+const currentIcon = computed(() => (currentTheme.value === 'dark' ? darkIcon : lightIcon))
 
 function toggleTheme() {
-  theme.global.current.value.dark ? theme.change('light') : theme.change('dark')
+  if (typeof window === 'undefined') return
+  const newTheme = currentTheme.value === 'dark' ? 'light' : 'dark'
+  currentTheme.value = newTheme
+  theme.global.name.value = newTheme
+  localStorage.setItem('theme', newTheme)
+  document.body.classList.toggle('dark-mode', newTheme === 'dark')
 }
 </script>
 
+
+
 <style scoped>
 .theme-toggle {
-  position: absolute;
+  position: fixed;
   top: 1.5vh;
   left: 1.5vw;
   width: clamp(50px, 6vw, 90px);

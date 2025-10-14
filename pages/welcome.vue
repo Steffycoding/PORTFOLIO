@@ -62,14 +62,15 @@ function submitAdmin() {
     // Set admin session
     localStorage.setItem('isAdmin', 'true')
 
-    // Redirect to admin page after successful login
-    router.push('/aboutadmin')
+    // Redirect admin to the correct page
+    router.push('/AboutAdmin')
     showAdminPopup.value = false
   } else {
     alert('Incorrect password!')
     adminPassword.value = ''
   }
 }
+
 
 // Logout (to call from admin page)
 function logoutAdmin() {

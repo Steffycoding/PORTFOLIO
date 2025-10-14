@@ -1,6 +1,7 @@
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
-const aboutText = ref(`
+// Initialize aboutText from localStorage if available
+const savedAbout = localStorage.getItem('aboutText') || `
 <ul class="about-list">
   <li><span></span> <span class="highlight">Hi, I'm an aspiring web developer</span>.</li>
   <li></span> I love tackling projects that push me to learn and create <span class="highlight">clean, intuitive interfaces</span>.</li>
@@ -10,7 +11,14 @@ const aboutText = ref(`
   <li></span> Beyond coding, I’m drawn to <span class="highlight">human-centered design</span>—thinking about how technology connects with people.</li>
   <li></span> My goal: keep growing, exploring, and creating things that matter.</li>
 </ul>
-`)
+`
+
+const aboutText = ref(savedAbout)
+
+// Watch for changes and persist to localStorage
+watch(aboutText, (newVal) => {
+  localStorage.setItem('aboutText', newVal)
+})
 
 export function useAbout() {
   const updateAbout = (newText: string) => {

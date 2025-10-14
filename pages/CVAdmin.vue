@@ -1,88 +1,225 @@
 <template>
-  <v-container>
-    <h2>Edit CV</h2>
+  <v-app>
+    <v-main class="cv-page">
+      <!-- Admin Sidebar -->
+      <AdminSidebar v-if="isAdmin" />
 
-    <label>Name:</label>
-    <input v-model="cvCopy.name" />
+      <!-- Theme Toggle -->
+      <div class="theme-toggle-wrapper">
+        <ThemeToggle />
+      </div>
 
-    <label>Role:</label>
-    <input v-model="cvCopy.role" />
+      <v-container class="cv-editor">
+        <h2>Edit CV</h2>
 
-    <label>Summary:</label>
-    <textarea v-model="cvCopy.summary" rows="6"></textarea>
+        <!-- Name & Role -->
+        <label>Name:</label>
+        <input v-model="cvCopy.name" placeholder="Full Name" />
 
-    <label>Experience:</label>
-    <div v-for="(job, idx) in cvCopy.experience" :key="idx">
-      <input v-model="job.title" placeholder="Job Title" />
-      <input v-model="job.date" placeholder="Date" />
-      <textarea v-model="job.description" placeholder="Description"></textarea>
-    </div>
-    <button @click="addExperience">Add Experience</button>
+        <label>Role:</label>
+        <input v-model="cvCopy.role" placeholder="Your Role" />
 
-    <label>Education:</label>
-    <div v-for="(edu, idx) in cvCopy.education" :key="idx">
-      <input v-model="edu.school" placeholder="School" />
-      <input v-model="edu.degree" placeholder="Degree" />
-    </div>
-    <button @click="addEducation">Add Education</button>
+        <!-- Summary -->
+        <label>Summary:</label>
+        <textarea v-model="cvCopy.summary" rows="6" placeholder="Write a brief summary..."></textarea>
 
-    <label>Skills:</label>
-    <h4>Languages</h4>
-    <div v-for="(lang, idx) in cvCopy.skills.languages" :key="idx">
-      <input v-model="cvCopy.skills.languages[idx]" />
-    </div>
-    <button @click="cvCopy.skills.languages.push('')">Add Language</button>
+        <!-- Experience -->
+        <label>Experience:</label>
+        <div v-for="(job, idx) in cvCopy.experience" :key="idx" class="section-block">
+          <div class="section-header">
+            <span>Job {{ idx + 1 }}</span>
+            <button class="delete-btn" @click="removeExperience(idx)">Delete</button>
+          </div>
+          <input v-model="job.title" placeholder="Job Title" />
+          <input v-model="job.date" placeholder="Date" />
+          <textarea v-model="job.description" placeholder="Description"></textarea>
+        </div>
+        <button class="add-btn" @click="addExperience">Add Experience</button>
 
-    <h4>Frameworks & Tools</h4>
-    <div v-for="(fw, idx) in cvCopy.skills.frameworks" :key="idx">
-      <input v-model="cvCopy.skills.frameworks[idx]" />
-    </div>
-    <button @click="cvCopy.skills.frameworks.push('')">Add Framework/Tool</button>
+        <!-- Education -->
+        <label>Education:</label>
+        <div v-for="(edu, idx) in cvCopy.education" :key="idx" class="section-block">
+          <div class="section-header">
+            <span>Education {{ idx + 1 }}</span>
+            <button class="delete-btn" @click="removeEducation(idx)">Delete</button>
+          </div>
+          <input v-model="edu.school" placeholder="School" />
+          <input v-model="edu.degree" placeholder="Degree" />
+        </div>
+        <button class="add-btn" @click="addEducation">Add Education</button>
 
-    <h4>Professional Skills</h4>
-    <div v-for="(skill, idx) in cvCopy.skills.professional" :key="idx">
-      <input v-model="cvCopy.skills.professional[idx]" />
-    </div>
-    <button @click="cvCopy.skills.professional.push('')">Add Skill</button>
+        <!-- Skills -->
+        <label>Skills:</label>
 
-    <br /><br />
-    <button @click="saveCV">Save CV</button>
-  </v-container>
+        <h4>Languages</h4>
+        <div v-for="(lang, idx) in cvCopy.skills.languages" :key="idx" class="skill-item">
+          <input v-model="cvCopy.skills.languages[idx]" placeholder="Language" />
+          <button class="delete-btn" @click="cvCopy.skills.languages.splice(idx,1)">Delete</button>
+        </div>
+        <button class="add-btn" @click="cvCopy.skills.languages.push('')">Add Language</button>
+
+        <h4>Frameworks & Tools</h4>
+        <div v-for="(fw, idx) in cvCopy.skills.frameworks" :key="idx" class="skill-item">
+          <input v-model="cvCopy.skills.frameworks[idx]" placeholder="Framework/Tool" />
+          <button class="delete-btn" @click="cvCopy.skills.frameworks.splice(idx,1)">Delete</button>
+        </div>
+        <button class="add-btn" @click="cvCopy.skills.frameworks.push('')">Add Framework/Tool</button>
+
+        <h4>Professional Skills</h4>
+        <div v-for="(skill, idx) in cvCopy.skills.professional" :key="idx" class="skill-item">
+          <input v-model="cvCopy.skills.professional[idx]" placeholder="Skill" />
+          <button class="delete-btn" @click="cvCopy.skills.professional.splice(idx,1)">Delete</button>
+        </div>
+        <button class="add-btn" @click="cvCopy.skills.professional.push('')">Add Skill</button>
+
+        <br />
+        <button class="save-btn" @click="saveCV">Save CV</button>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script setup>
-import { reactive, toRefs } from 'vue'
+import { reactive, ref, watch, onMounted } from 'vue'
 import { useCV } from '~/composables/useCV'
+import AdminSidebar from '~/components/AdminSidebar.vue'
+import ThemeToggle from '~/components/ThemeToggle.vue'
 
 const { cvData, updateCV } = useCV()
+
+// Use reactive copy
 const cvCopy = reactive(JSON.parse(JSON.stringify(cvData.value)))
 
+// Sync changes immediately with store + localStorage
+watch(cvCopy, (newVal) => {
+  updateCV(newVal)
+}, { deep: true })
+
+// Admin check
+const isAdmin = ref(false)
+onMounted(() => {
+  isAdmin.value = localStorage.getItem('isAdmin') === 'true'
+})
+
+// Experience & Education handlers
 const addExperience = () => cvCopy.experience.push({ title: '', date: '', description: '' })
+const removeExperience = (idx) => cvCopy.experience.splice(idx, 1)
+
 const addEducation = () => cvCopy.education.push({ school: '', degree: '' })
+const removeEducation = (idx) => cvCopy.education.splice(idx, 1)
 
 const saveCV = () => {
-  updateCV(cvCopy)
-  alert('CV updated!')
+  // Already synced via watch, optional alert
+  alert('CV updated and saved!')
 }
 </script>
 
+
+
 <style scoped>
+.cv-page {
+  display: flex;
+  min-height: 100vh;
+  background: var(--v-theme-background);
+  color: var(--v-theme-on-background);
+  position: relative;
+}
+
+/* Theme Toggle wrapper */
+.theme-toggle-wrapper {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 1200;
+}
+
+/* Editor container */
+.cv-editor {
+  max-width: 900px;
+  margin: 2rem auto;
+  font-family: 'Inter', sans-serif;
+  flex: 1;
+  padding: 2rem;
+  background: var(--v-theme-surface);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+/* Inputs and textareas */
 input, textarea {
   display: block;
   width: 100%;
-  margin: 0.3rem 0 0.8rem;
-  padding: 0.4rem 0.6rem;
+  margin: 0.3rem 0 1rem;
+  padding: 0.5rem 0.8rem;
   border-radius: 6px;
   border: 1px solid #13AEFB;
+  transition: all 0.2s;
 }
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #E78F0A;
+}
+
+/* Buttons */
 button {
-  background: #13AEFB;
-  color: white;
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  font-weight: 600;
   margin-bottom: 1rem;
+  transition: all 0.2s;
 }
-button:hover { transform: scale(1.05); transition: 0.2s; }
+
+/* Add & Save buttons with blue-orange gradient */
+.add-btn {
+  background: linear-gradient(135deg, #13AEFB, #E78F0A);
+  color: #fff;
+}
+.save-btn {
+  background: linear-gradient(135deg, #E78F0A, #13AEFB);
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+/* Delete buttons */
+.delete-btn {
+  background: #B00020;
+  color: #fff;
+  font-size: 0.85rem;
+  margin-left: 0.5rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+}
+
+/* Section blocks */
+.section-block {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  background: rgba(231, 143, 10, 0.08);
+}
+
+/* Section headers */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+/* Skill items */
+.skill-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+/* Hover effects */
+button:hover {
+  transform: scale(1.05);
+}
 </style>
