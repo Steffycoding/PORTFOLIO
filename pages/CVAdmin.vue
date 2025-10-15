@@ -79,40 +79,38 @@
   </v-app>
 </template>
 
-<script setup>
-import { reactive, ref, watch, onMounted } from 'vue'
-import { useCV } from '~/composables/useCV'
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue'
+import { useCV } from '../composables/useCV'
 import AdminSidebar from '~/components/AdminSidebar.vue'
 import ThemeToggle from '~/components/ThemeToggle.vue'
 
+// script setup
 const { cvData, updateCV } = useCV()
+const cvCopy = ref(JSON.parse(JSON.stringify(cvData.value)))
 
-// Use reactive copy
-const cvCopy = reactive(JSON.parse(JSON.stringify(cvData.value)))
+const saveCV = () => {
+  updateCV(cvCopy.value)   // sync changes to main cvData
+  alert('CV updated and synced!')
+}
 
-// Sync changes immediately with store + localStorage
-watch(cvCopy, (newVal) => {
-  updateCV(newVal)
-}, { deep: true })
-
-// Admin check
+// Admin access check
 const isAdmin = ref(false)
 onMounted(() => {
   isAdmin.value = localStorage.getItem('isAdmin') === 'true'
 })
 
-// Experience & Education handlers
-const addExperience = () => cvCopy.experience.push({ title: '', date: '', description: '' })
-const removeExperience = (idx) => cvCopy.experience.splice(idx, 1)
+// Handlers
+const addExperience = () =>
+  cvCopy.value.experience.push({ title: '', date: '', description: '' })
+const removeExperience = (i: number) => cvCopy.value.experience.splice(i, 1)
+const addEducation = () =>
+  cvCopy.value.education.push({ school: '', degree: '' })
+const removeEducation = (i: number) => cvCopy.value.education.splice(i, 1)
 
-const addEducation = () => cvCopy.education.push({ school: '', degree: '' })
-const removeEducation = (idx) => cvCopy.education.splice(idx, 1)
-
-const saveCV = () => {
-  // Already synced via watch, optional alert
-  alert('CV updated and saved!')
-}
 </script>
+
+
 
 
 

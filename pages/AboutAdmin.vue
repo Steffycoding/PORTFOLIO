@@ -35,7 +35,7 @@
           <!-- Success Message -->
           <transition name="fade">
             <div v-if="successMessage" class="success-msg">
-              ✅ {{ successMessage }}
+              {{ successMessage }}
             </div>
           </transition>
         </div>

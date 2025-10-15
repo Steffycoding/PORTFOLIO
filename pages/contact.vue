@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-page">
+  <div class="contact-page">
     <!-- Sidebar -->
     <SidebarAdmin />
 
@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import SidebarAdmin from '~/components/AdminSidebar.vue'
+import SidebarAdmin from '~/components/Sidebar.vue'
 import ThemeToggle from '~/components/ThemeToggle.vue'
 
 const profilePic = ref('/images/me.jpg')
@@ -37,12 +37,13 @@ const profilePic = ref('/images/me.jpg')
 </script>
 
 <style scoped>
+
 /* Match About Page Theme System */
 .admin-page {
   display: flex;
   flex-direction: row;
   min-height: 100vh;
-  background: var(--v-theme-background);
+  background: #DDDDDD; /* Light gray for light mode */
   color: var(--v-theme-surface);
   font-family: 'Inter', 'Roboto', sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -58,7 +59,6 @@ const profilePic = ref('/images/me.jpg')
   position: relative;
 }
 
-/* Theme toggle */
 .theme-toggle {
   position: fixed;
   top: 1.5vh;
@@ -67,14 +67,17 @@ const profilePic = ref('/images/me.jpg')
   z-index: 1100;
   cursor: pointer;
 }
+
 .theme-toggle img {
   width: 100%;
 }
+
 .theme-toggle:hover {
   transform: scale(1.12);
   transition: transform 0.2s ease;
   filter: drop-shadow(0 0 8px #13AEFB);
 }
+
 
 /* Popup card */
 .popup-card {
@@ -93,7 +96,7 @@ const profilePic = ref('/images/me.jpg')
 
 /* Dark mode adaptive */
 .dark-mode .admin-page {
-  background: var(--v-theme-background);
+  background: #137CB5; /* Blue for dark mode, matching other pages */
   color: var(--v-theme-surface);
 }
 .dark-mode .popup-card {
@@ -227,3 +230,4 @@ const profilePic = ref('/images/me.jpg')
 }
 
 </style>
+

@@ -28,7 +28,7 @@ import { useAbout } from '../composables/useAbout'
 const { aboutText } = useAbout()
 </script>
 
-<style scoped>
+<style>
 .about-page {
   display: flex;
   min-height: 100vh;
@@ -96,10 +96,12 @@ const { aboutText } = useAbout()
   line-height: 1.7;
   max-width: 1000px;
   margin: 0 auto;
+  color: var(--v-theme-surface);
 }
 
+
 .highlight {
-  color: #E78F0A;
+  color: #E78F0A !important;
   font-weight: 600;
 }
 

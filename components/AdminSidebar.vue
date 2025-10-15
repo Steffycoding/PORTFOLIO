@@ -56,6 +56,8 @@ function logoutAdmin() {
 
 
 <style scoped>
+:root { --sidebar-width: 220px; }
+
 .sidebar {
   width: clamp(200px, 18%, 280px);
   height: 100vh;
@@ -136,7 +138,8 @@ function logoutAdmin() {
 }
 
 /* Responsive Sidebar */
-@media (max-width: 768px) {
+v-main { margin-left: var(--sidebar-width, 220px); }
+@media (max-width: 768px) { v-main { margin-left: 0; }
   .sidebar {
     position: fixed;
     bottom: 0;

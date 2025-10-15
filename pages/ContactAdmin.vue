@@ -93,9 +93,11 @@ onMounted(() => {
   z-index: 1100;
   cursor: pointer;
 }
+
 .theme-toggle img {
   width: 100%;
 }
+
 .theme-toggle:hover {
   transform: scale(1.12);
   transition: transform 0.2s ease;

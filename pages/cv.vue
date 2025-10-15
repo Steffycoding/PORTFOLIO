@@ -5,7 +5,12 @@
       <v-container class="cv-wrapper" fluid>
         <Sidebar />
 
-        <div class="main-content">
+        <div class="main-content" ref="cvContent">
+          <!-- Download Button -->
+          <button class="download-btn" @click="cvData.name ? downloadPDF() : null" :disabled="!cvData.name">
+            Download PDF
+          </button>
+
           <header class="cv-header">
             <h1 class="cv-name">{{ cvData.name }}</h1>
             <p class="cv-role">{{ cvData.role }}</p>
@@ -57,15 +62,163 @@
   </v-app>
 </template>
 
-
 <script setup>
+import { ref, nextTick } from 'vue'
 import Sidebar from '~/components/Sidebar.vue'
 import ThemeToggle from '~/components/ThemeToggle.vue'
 import { useCV } from '~/composables/useCV'
 
 const { cvData } = useCV()
-</script>
+const cvContent = ref(null)
 
+const downloadPDF = async () => {
+  if (process.client && cvData.value) {
+    const { jsPDF } = await import('jspdf')
+
+    const pdf = new jsPDF('p', 'mm', 'a4')
+    const pageWidth = pdf.internal.pageSize.getWidth()
+    const pageHeight = pdf.internal.pageSize.getHeight()
+    const margin = 15
+    let y = 20
+
+    // ---------------- Theme-based Background ----------------
+    const currentTheme = localStorage.getItem('theme') || 'light'
+    const darkTheme = currentTheme === 'dark'
+
+    // Light mode: headings dark orange, dates slightly dark gray
+    // Dark mode: headings orange, dates light gray, background dark
+    const bgColor = darkTheme ? '#333333' : '#F5F5F5'
+    const headingColor = darkTheme ? '#E78F0A' : '#D2691E'  // Dark orange for light mode
+    const dateColor = darkTheme ? '#DDDDDD' : '#555555'      // Slightly dark gray for light mode
+    const textColor = darkTheme ? '#FFFFFF' : '#1E1E1E'
+
+    pdf.setFillColor(bgColor)
+    pdf.rect(0, 0, pageWidth, pageHeight, 'F')
+
+    // ---------------- Header ----------------
+    pdf.setFont('helvetica', 'bold')
+    pdf.setFontSize(22)
+    pdf.setTextColor(headingColor)
+    pdf.text(cvData.value.name, pageWidth / 2, y, { align: 'center' })
+
+    y += 10
+    pdf.setFont('helvetica', 'normal')
+    pdf.setFontSize(16)
+    pdf.setTextColor(textColor)
+    pdf.text(cvData.value.role, pageWidth / 2, y, { align: 'center' })
+
+    y += 15
+    pdf.setDrawColor(darkTheme ? 255 : 200)
+    pdf.setLineWidth(0.5)
+    pdf.line(margin, y, pageWidth - margin, y)
+    y += 10
+
+    // ---------------- Summary ----------------
+    pdf.setFont('helvetica', 'bold')
+    pdf.setFontSize(12)
+    pdf.setTextColor(headingColor)
+    pdf.text('Summary', margin, y)
+    y += 6
+    pdf.setDrawColor(darkTheme ? 100 : 200)
+    pdf.setLineWidth(0.3)
+    pdf.line(margin, y, pageWidth - margin, y)
+    y += 5
+
+    pdf.setFont('helvetica', 'normal')
+    pdf.setFontSize(13) // bigger summary font
+    pdf.setTextColor(textColor)
+    const summaryLines = pdf.splitTextToSize(cvData.value.summary, pageWidth - 2 * margin)
+    pdf.text(summaryLines, margin, y)
+    y += summaryLines.length * 6 + 5 // more spacing
+
+    // ---------------- Experience ----------------
+    pdf.setFont('helvetica', 'bold')
+    pdf.setFontSize(12)
+    pdf.setTextColor(headingColor)
+    pdf.text('Experience', margin, y)
+    y += 6
+    pdf.setDrawColor(darkTheme ? 100 : 200)
+    pdf.setLineWidth(0.3)
+    pdf.line(margin, y, pageWidth - margin, y)
+    y += 5
+
+    cvData.value.experience.forEach(job => {
+      pdf.setFont('helvetica', 'bold')
+      pdf.setFontSize(11)
+      pdf.setTextColor(textColor)
+      pdf.text(job.title, margin, y)
+
+      pdf.setFont('helvetica', 'italic')
+      pdf.setFontSize(10)
+      pdf.setTextColor(dateColor)
+      pdf.text(job.date, pageWidth - margin, y, { align: 'right' })
+
+      y += 6
+      pdf.setFont('helvetica', 'normal')
+      pdf.setFontSize(11)
+      pdf.setTextColor(textColor)
+      const descLines = pdf.splitTextToSize(job.description, pageWidth - 2 * margin)
+      pdf.text(descLines, margin, y)
+      y += descLines.length * 6 + 6
+    })
+
+    // ---------------- Education ----------------
+    pdf.setFont('helvetica', 'bold')
+    pdf.setFontSize(12)
+    pdf.setTextColor(headingColor)
+    pdf.text('Education', margin, y)
+    y += 6
+    pdf.setDrawColor(darkTheme ? 100 : 200)
+    pdf.setLineWidth(0.3)
+    pdf.line(margin, y, pageWidth - margin, y)
+    y += 5
+
+    pdf.setFont('helvetica', 'normal')
+    pdf.setFontSize(11)
+    pdf.setTextColor(textColor)
+    cvData.value.education.forEach(edu => {
+      pdf.text(`${edu.school} — ${edu.degree}`, margin, y)
+      y += 6
+    })
+    y += 8
+
+    // ---------------- Skills ----------------
+    pdf.setFont('helvetica', 'bold')
+    pdf.setFontSize(12)
+    pdf.setTextColor(headingColor)
+    pdf.text('Skills', margin, y)
+    y += 6
+    pdf.setDrawColor(darkTheme ? 100 : 200)
+    pdf.setLineWidth(0.3)
+    pdf.line(margin, y, pageWidth - margin, y)
+    y += 5
+
+    pdf.setFont('helvetica', 'normal')
+    pdf.setFontSize(11)
+    pdf.setTextColor(textColor)
+    const skillCategories = [
+      { title: 'Languages', items: cvData.value.skills.languages },
+      { title: 'Frameworks & Tools', items: cvData.value.skills.frameworks },
+      { title: 'Professional Skills', items: cvData.value.skills.professional },
+    ]
+    skillCategories.forEach(cat => {
+      pdf.setFont('helvetica', 'bold')
+      pdf.setTextColor(headingColor)
+      pdf.text(cat.title, margin, y)
+      y += 5
+      pdf.setFont('helvetica', 'normal')
+      pdf.setTextColor(textColor)
+      const line = pdf.splitTextToSize(cat.items.join(', '), pageWidth - 2 * margin)
+      pdf.text(line, margin, y)
+      y += line.length * 6 + 6
+    })
+
+    pdf.save(`${cvData.value.name}-CV.pdf`)
+  }
+}
+
+
+</script>
 
 
 
@@ -80,6 +233,26 @@ const { cvData } = useCV()
   flex: 1;
   padding-top: 2rem;
   overflow: hidden;
+  position: relative;
+}
+
+/* Download Button */
+.download-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #137CB5;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+  z-index: 10;
+}
+.download-btn:hover {
+  background-color: #13AEFB;
 }
 
 /* Main content */
@@ -89,6 +262,7 @@ const { cvData } = useCV()
   padding: 1.5rem 2rem;
   text-align: left;
   overflow: hidden;
+  position: relative;
 }
 
 /* CV Styles */
@@ -132,6 +306,7 @@ const { cvData } = useCV()
 @media (max-width: 768px) {
   .cv-wrapper { flex-direction: column; }
   .main-content { margin-left: 0; padding: 1rem; padding-bottom: 90px; }
+  .download-btn { top: 0.5rem; right: 0.5rem; padding: 0.4rem 0.8rem; font-size: 0.85rem; }
 }
 @media (min-width: 600px) and (max-width: 1050px) {
   .cv-name { font-size: 2.2rem; }
