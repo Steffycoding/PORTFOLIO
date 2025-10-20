@@ -1,5 +1,5 @@
 <template>
-  <div class="contact-page">
+  <div class="contact-page" >
     <!-- Sidebar -->
     <SidebarAdmin />
 
@@ -26,7 +26,6 @@
   </div>
 </template>
 
-
 <script setup lang="ts">
 import { ref } from 'vue'
 import SidebarAdmin from '~/components/Sidebar.vue'
@@ -34,31 +33,37 @@ import ThemeToggle from '~/components/ThemeToggle.vue'
 
 const profilePic = ref('/images/me.jpg')
 
+// Dark mode toggle
+const isDarkMode = ref(false)
+const toggleDarkMode = () => { isDarkMode.value = !isDarkMode.value }
 </script>
 
 <style scoped>
 
-/* Match About Page Theme System */
-.admin-page {
+/* ---------------- Base Contact Page ---------------- */
+.contact-page {
   display: flex;
   flex-direction: row;
-  min-height: 100vh;
-  background: #DDDDDD; /* Light gray for light mode */
+  height: 100vh;
+  overflow: hidden;
+  background: var(--v-theme-background);
   color: var(--v-theme-surface);
   font-family: 'Inter', 'Roboto', sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Main content */
 .main-content {
   flex: 1;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding: 5rem 2rem;
+  align-items: center;
+  padding: 2rem;
+  overflow: hidden;
   position: relative;
+  height: 100vh;
 }
 
+/* Theme toggle */
 .theme-toggle {
   position: fixed;
   top: 1.5vh;
@@ -67,23 +72,19 @@ const profilePic = ref('/images/me.jpg')
   z-index: 1100;
   cursor: pointer;
 }
-
 .theme-toggle img {
   width: 100%;
 }
-
 .theme-toggle:hover {
   transform: scale(1.12);
   transition: transform 0.2s ease;
-  filter: drop-shadow(0 0 8px #13AEFB);
 }
 
-
-/* Popup card */
+/* Popup Card */
 .popup-card {
   width: 90%;
   max-width: 600px;
-  background: rgba(255, 255, 255, 0.05);
+  background: transparent;
   backdrop-filter: blur(12px);
   border-radius: 1.5rem;
   padding: 2.5rem;
@@ -94,14 +95,37 @@ const profilePic = ref('/images/me.jpg')
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Dark mode adaptive */
-.dark-mode .admin-page {
-  background: #137CB5; /* Blue for dark mode, matching other pages */
-  color: var(--v-theme-surface);
+.dark-mode .contact-page{
+  background-color: #102333;
 }
+
+/* Dark Mode */
 .dark-mode .popup-card {
-  background: rgba(19, 124, 181, 0.08);
-  box-shadow: 0 6px 25px rgba(19, 124, 181, 0.25);
+  background: #1b3347;
+  box-shadow: 0 6px 25px rgba(19, 174, 251, 0.25);
+}
+
+/* Contact Buttons in dark mode */
+.dark-mode .contact-btn {
+  background: linear-gradient(145deg, #13AEFB, #E78F0A);
+}
+.dark-mode .contact-btn:hover {
+  background: linear-gradient(145deg, #13AEFB, #E78F0A);
+}
+
+.dark-mode .profile-pic { 
+  border-color: #13AEFB; 
+}
+
+/* Upload label */
+.dark-mode .upload-label {
+  border-color: #13AEFB;
+  color: #13AEFB;
+  background: rgba(19, 174, 251, 0.15);
+}
+.dark-mode .upload-label:hover {
+  background: #13AEFB;
+  color: #fff;
 }
 
 /* Title */
@@ -117,14 +141,13 @@ const profilePic = ref('/images/me.jpg')
   -webkit-text-fill-color: transparent;
   animation: gradientAnimation 6s ease infinite;
 }
-
 @keyframes gradientAnimation {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-/* Upload label */
+/* Upload label (if needed) */
 .upload-label {
   color: #E78F0A;
   font-size: 1.1rem;
@@ -150,10 +173,7 @@ const profilePic = ref('/images/me.jpg')
   background: #13AEFB;
   color: #fff;
 }
-
-.upload-input {
-  display: none;
-}
+.upload-input { display: none; }
 
 /* Profile pic */
 .profile-pic {
@@ -166,11 +186,9 @@ const profilePic = ref('/images/me.jpg')
   border: 4px solid #13AEFB;
   transition: border-color 0.3s ease;
 }
-.dark-mode .profile-pic {
-  border-color: #E78F0A;
-}
+.dark-mode .profile-pic { border-color: #E78F0A; }
 
-/* Contact buttons */
+/* Contact Buttons */
 .contact-links {
   display: flex;
   flex-direction: column;
@@ -203,31 +221,45 @@ const profilePic = ref('/images/me.jpg')
   background: linear-gradient(145deg, #13AEFB, #E78F0A);
 }
 
-/* Responsiveness */
+/* ---------------- Responsiveness ---------------- */
 @media (min-width: 1600px) {
-  .popup-card {
-    width: 45%;
-    max-width: 800px;
-    padding: 3rem;
-  }
+  .popup-card { width: 45%; max-width: 800px; padding: 3rem; }
   .page-heading { font-size: 3rem; }
   .profile-pic { width: 250px; height: 250px; }
   .contact-btn { font-size: 1.6rem; padding: 1.6rem 0; }
 }
+
 @media (min-width: 768px) and (max-width: 1280px) {
   .popup-card { width: 50%; max-width: 650px; padding: 2.5rem; }
   .page-heading { font-size: 2.4rem; }
   .profile-pic { width: 200px; height: 200px; }
   .contact-btn { font-size: 1.45rem; padding: 1.5rem 0; }
 }
+
 @media (max-width: 480px) {
-  .admin-page { flex-direction: column; }
-  .main-content { padding: 2rem 1rem; }
-  .popup-card { width: 95%; padding: 1.8rem; }
-  .page-heading { font-size: 1.8rem; margin-bottom: 1.5rem; }
-  .profile-pic { width: 150px; height: 150px; margin-bottom: 1.5rem; }
-  .contact-btn { font-size: 1.25rem; padding: 1rem 0; }
+  .contact-page {
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .main-content {
+    padding: 1.5rem 1rem;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    transform: translateY(-30px);
+  }
+  .popup-card {
+    width: 90%;
+    max-width: 380px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 1rem;
+  }
+  .page-heading { font-size: 1.6rem; margin-bottom: 1rem; }
+  .profile-pic { width: 140px; height: 140px; margin-bottom: 1.2rem; }
+  .contact-btn { width: 100%; max-width: 300px; font-size: 1.15rem; padding: 0.9rem 0; }
+  SidebarAdmin { display: none; }
 }
 
 </style>
-

@@ -297,56 +297,120 @@ const downloadPDF = async () => {
 .skills, .cv-section ul { list-style: none; padding: 0; margin: 0; }
 .skills li, .cv-section ul li { margin-bottom: 0.4rem; font-size: 0.95rem; }
 
-.stack { display: flex; flex-wrap: wrap; gap: 1.2rem; }
-.stack > div { flex: 1; min-width: 180px; }
-.stack h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.3rem; }
+.stack {
+  display: flex;
+  flex-wrap: wrap;       /* allow wrapping */
+  gap: 1.2rem;           /* spacing between columns */
+  justify-content: flex-start;
+}
+
+.stack > div {
+  flex: 1 1 250px;       /* grow, shrink, base width */
+  min-width: 0;          /* prevents overflow */
+}
+
+.stack h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.25rem;
+}
 .stack ul { padding-left: 1rem; }
 
 /* ---------------- Responsive ---------------- */
-@media (max-width: 768px) {
-  .cv-wrapper { flex-direction: column; }
-  .main-content { margin-left: 0; padding: 1rem; padding-bottom: 90px; }
-  .download-btn { top: 0.5rem; right: 0.5rem; padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+  .cv-wrapper { flex-direction: column; padding-top: 1rem; }
+  .main-content { margin-left: 0; padding: 2.5rem 1rem 80px 1rem; } /* extra top padding for download button */
+  .download-btn {
+    position: fixed;      /* fix to viewport */
+    top: 0.8rem;
+    right: 0.8rem;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8rem;
+  }
+  .cv-name { font-size: 1.6rem; }
+  .cv-role { font-size: 0.95rem; }
+  .section-title { font-size: 1.1rem; margin-bottom: 0.4rem; }
+  .summary, .skills li, .cv-section ul li { font-size: 0.85rem; line-height: 1.4; }
+  .job h3 { font-size: 0.95rem; }
+  .date { font-size: 0.75rem; margin-bottom: 0.15rem; }
+  .stack { flex-direction: column; gap: 0.8rem; }
+  .stack > div { flex-basis: 100%; min-width: 0; }
+  .stack h3 { font-size: 0.95rem; margin-bottom: 0.2rem; }
 }
-@media (min-width: 600px) and (max-width: 1050px) {
-  .cv-name { font-size: 2.2rem; }
+
+/* Mobile / Small Tablets */
+@media (min-width: 481px) and (max-width: 768px) {
+  .cv-wrapper { flex-direction: column; }
+  .main-content { margin-left: 0; padding: 2.5rem 1.2rem 90px 1.2rem; } /* extra top padding */
+  .download-btn {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  .cv-name { font-size: 2rem; }
   .cv-role { font-size: 1rem; }
   .section-title { font-size: 1.25rem; margin-bottom: 0.5rem; }
-  .summary, .skills li, .cv-section ul li { font-size: 0.9rem; line-height: 1.4; }
+  .summary, .skills li, .cv-section ul li { font-size: 0.9rem; line-height: 1.45; }
   .job h3 { font-size: 1rem; }
   .date { font-size: 0.8rem; margin-bottom: 0.15rem; }
-  .stack > div { min-width: 160px; gap: 1rem; }
+  .stack { flex-wrap: wrap; gap: 1rem; }
+  .stack > div { flex-basis: 45%; min-width: 0; } /* 2 per row */
   .stack h3 { font-size: 1rem; margin-bottom: 0.25rem; }
 }
-@media (min-width: 769px) and (max-width: 1280px) {
-  .cv-name { font-size: 2.5rem; }
+
+/* Tablets / Laptops */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .main-content { margin-left: clamp(180px, 18%, 250px); padding: 2.5rem 1.5rem; }
+  .download-btn { position: fixed; top: 1.2rem; right: 1.2rem; }
+  .cv-name { font-size: 2.4rem; }
+  .cv-role { font-size: 1.05rem; }
+  .section-title { font-size: 1.35rem; }
+  .summary, .skills li, .cv-section ul li { font-size: 1rem; line-height: 1.6; }
+  .job h3 { font-size: 1.05rem; }
+  .date { font-size: 0.85rem; }
+  .stack > div { flex-basis: 30%; min-width: 0; } /* 3 per row */
+  .stack h3 { font-size: 1rem; margin-bottom: 0.25rem; }
+}
+
+/* Laptops / Small Desktops */
+@media (min-width: 1025px) and (max-width: 1280px) {
+  .main-content { margin-left: clamp(200px, 20%, 280px); padding: 2.5rem 2rem; }
+  .download-btn { position: fixed; top: 1.2rem; right: 2rem; }
+  .cv-name { font-size: 2.5rem;}
   .cv-role { font-size: 1.05rem; }
   .section-title { font-size: 1.4rem; }
   .summary, .skills li, .cv-section ul li { font-size: 1rem; line-height: 1.6; }
-  .stack > div { min-width: 200px; }
-}
-@media (min-width: 1024px) and (max-width: 1280px) {
-  .cv-name { font-size: 2.4rem; }
-  .cv-role { font-size: 1rem; }
-  .section-title { font-size: 1.3rem; margin-bottom: 0.5rem; }
   .job h3 { font-size: 1.05rem; }
   .date { font-size: 0.85rem; margin-bottom: 0.2rem; }
-  .summary, .skills li, .cv-section ul li { font-size: 0.95rem; line-height: 1.45; }
-  .stack > div { min-width: 180px; gap: 1rem; }
+  .stack > div { flex-basis: 25%; min-width: 0; } /* 4 per row */
   .stack h3 { font-size: 1rem; margin-bottom: 0.25rem; }
 }
+
+/* Large Screens */
 @media (min-width: 1281px) {
+  .main-content { margin-left: clamp(220px, 22%, 300px); padding: 2.5rem 2rem; }
+  .download-btn { position: fixed; top: 1.5rem; right: 2rem; }
   .cv-name { font-size: 2.8rem; }
   .cv-role { font-size: 1.1rem; }
   .section-title { font-size: 1.5rem; }
   .summary, .skills li, .cv-section ul li { font-size: 1.15rem; line-height: 1.7; }
-  .stack > div { min-width: 210px; }
+  .stack > div { flex-basis: 23%; min-width: 0; }
+  .stack h3 { font-size: 1.05rem; }
 }
+
+/* Extra Large Screens */
 @media (min-width: 1601px) {
+  .main-content { margin-left: clamp(220px, 22%, 300px); padding: 2.5rem 2rem; }
+  .download-btn { position: fixed; top: 1.5rem; right: 2rem; }
   .cv-name { font-size: 3rem; }
   .cv-role { font-size: 1.2rem; }
   .section-title { font-size: 1.6rem; }
   .summary, .skills li, .cv-section ul li { font-size: 1.25rem; line-height: 1.8; }
-  .stack > div { min-width: 220px; }
+  .stack > div { flex-basis: 20%; min-width: 0; }
+  .stack h3 { font-size: 1.1rem; }
 }
+
 </style>
