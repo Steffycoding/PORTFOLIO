@@ -30,6 +30,8 @@ const links = [
   { name: 'CV', path: '/CVAdmin' },
   { name: 'Playground', path: '/PlaygroundAdmin' },
   { name: 'Contact', path: '/ContactAdmin' },
+  { name: 'Figma', path: 'FigmaAdmin' },
+
 ]
 
 onMounted(() => {

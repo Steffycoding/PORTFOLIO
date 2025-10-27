@@ -6,7 +6,9 @@ export function useSidebar() {
     { name: 'About', path: '/about' },
     { name: 'CV', path: '/cv' },
     { name: 'Playground', path: '/playground' },
+    { name: 'Figma', path: '/figma' },
     { name: 'Contact', path: '/contact' },
+
   ])
 
   return { links }

@@ -6,6 +6,7 @@ export function useAdminSidebar() {
     { name: 'About', path: '/AboutAdmin' },
     { name: 'CV', path: '/CVAdmin' },
     { name: 'Playground', path: '/PlaygroundAdmin' },
+    { name: 'Figma', path: '/FigmaAdmin' },
     { name: 'Contact', path: '/ContactAdmin' },
   ])
 
