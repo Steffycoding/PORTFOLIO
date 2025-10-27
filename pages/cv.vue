@@ -85,11 +85,9 @@ const downloadPDF = async () => {
     const currentTheme = localStorage.getItem('theme') || 'light'
     const darkTheme = currentTheme === 'dark'
 
-    // Light mode: headings dark orange, dates slightly dark gray
-    // Dark mode: headings orange, dates light gray, background dark
     const bgColor = darkTheme ? '#333333' : '#F5F5F5'
-    const headingColor = darkTheme ? '#E78F0A' : '#D2691E'  // Dark orange for light mode
-    const dateColor = darkTheme ? '#DDDDDD' : '#555555'      // Slightly dark gray for light mode
+    const headingColor = darkTheme ? '#E78F0A' : '#D2691E'
+    const dateColor = darkTheme ? '#DDDDDD' : '#555555'
     const textColor = darkTheme ? '#FFFFFF' : '#1E1E1E'
 
     pdf.setFillColor(bgColor)
@@ -125,11 +123,11 @@ const downloadPDF = async () => {
     y += 5
 
     pdf.setFont('helvetica', 'normal')
-    pdf.setFontSize(13) // bigger summary font
+    pdf.setFontSize(13)
     pdf.setTextColor(textColor)
     const summaryLines = pdf.splitTextToSize(cvData.value.summary, pageWidth - 2 * margin)
     pdf.text(summaryLines, margin, y)
-    y += summaryLines.length * 6 + 5 // more spacing
+    y += summaryLines.length * 6 + 5
 
     // ---------------- Experience ----------------
     pdf.setFont('helvetica', 'bold')
@@ -196,30 +194,44 @@ const downloadPDF = async () => {
     pdf.setFont('helvetica', 'normal')
     pdf.setFontSize(11)
     pdf.setTextColor(textColor)
+
     const skillCategories = [
       { title: 'Languages', items: cvData.value.skills.languages },
       { title: 'Frameworks & Tools', items: cvData.value.skills.frameworks },
       { title: 'Professional Skills', items: cvData.value.skills.professional },
     ]
-    skillCategories.forEach(cat => {
+
+    const colWidth = (pageWidth - 2 * margin) / skillCategories.length
+    let maxLines = Math.max(
+      skillCategories[0].items.length,
+      skillCategories[1].items.length,
+      skillCategories[2].items.length
+    )
+
+    // Draw titles
+    skillCategories.forEach((cat, i) => {
       pdf.setFont('helvetica', 'bold')
       pdf.setTextColor(headingColor)
-      pdf.text(cat.title, margin, y)
-      y += 5
-      pdf.setFont('helvetica', 'normal')
-      pdf.setTextColor(textColor)
-      const line = pdf.splitTextToSize(cat.items.join(', '), pageWidth - 2 * margin)
-      pdf.text(line, margin, y)
-      y += line.length * 6 + 6
+      pdf.text(cat.title, margin + colWidth * i, y)
     })
+    y += 6
+    pdf.setFont('helvetica', 'normal')
+    pdf.setTextColor(textColor)
+
+    // Draw skills in columns
+    for (let i = 0; i < maxLines; i++) {
+      skillCategories.forEach((cat, colIndex) => {
+        if (cat.items[i]) {
+          pdf.text(cat.items[i], margin + colWidth * colIndex, y + i * 6)
+        }
+      })
+    }
+    y += maxLines * 6 + 6
 
     pdf.save(`${cvData.value.name}-CV.pdf`)
   }
 }
-
-
-</script>
-
+</script> 
 
 
 <style scoped>
