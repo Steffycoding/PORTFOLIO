@@ -54,7 +54,7 @@ const { links } = useSidebar()
   align-items: center;
   padding: 0.75rem 0; /* smaller padding */
   font-family: 'Inter', 'Poppins', sans-serif;
-  font-size: 1rem; /* slightly smaller font */
+  font-size: 1.05rem; /* slightly smaller font */
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
