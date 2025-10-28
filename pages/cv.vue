@@ -271,7 +271,7 @@ const downloadPDF = async () => {
 .main-content {
   margin-left: clamp(220px, 20%, 300px);
   flex: 1;
-  padding: 1.5rem 2rem;
+  padding: 1rem 2rem; /* reduced top padding */
   text-align: left;
   overflow: hidden;
   position: relative;
@@ -286,9 +286,24 @@ const downloadPDF = async () => {
 }
 
 /* Sections & Typography */
-.cv-header { text-align: center; margin-bottom: 1rem; }
-.cv-name { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; color: #E78F0A; }
-.cv-role { font-size: 1.5rem; color: #13AEFB; font-weight: 500; }
+
+/* CV Header */
+.cv-header {
+  text-align: center;
+  margin-bottom: 0.5rem; /* reduced spacing */
+}
+.cv-name {
+  font-size: clamp(1.6rem, 3vw, 2rem); /* slightly smaller */
+  font-weight: 800;
+  color: #E78F0A;
+  margin-bottom: 0.25rem;
+}
+.cv-role {
+  font-size: 1.25rem; /* smaller */
+  color: #13AEFB;
+  font-weight: 500;
+}
+
 
 .cv-section { margin-bottom: 1.2rem; }
 .section-title {
@@ -332,7 +347,6 @@ const downloadPDF = async () => {
 /* Small Mobile Devices */
 @media (max-width: 480px) {
   .cv-wrapper { flex-direction: column; padding-top: 1rem; }
-  .main-content { margin-left: 0; padding: 2.5rem 1rem 80px 1rem; } /* extra top padding for download button */
   .download-btn {
     position: fixed;      /* fix to viewport */
     top: 0.8rem;
@@ -340,8 +354,9 @@ const downloadPDF = async () => {
     padding: 0.35rem 0.7rem;
     font-size: 0.8rem;
   }
-  .cv-name { font-size: 1.6rem; }
-  .cv-role { font-size: 0.95rem; }
+  .main-content { padding: 1.5rem 1rem; } /* less top padding */
+  .cv-name { font-size: 1.4rem; }
+  .cv-role { font-size: 1rem; }
   .section-title { font-size: 1.1rem; margin-bottom: 0.4rem; }
   .summary, .skills li, .cv-section ul li { font-size: 0.85rem; line-height: 1.4; }
   .job h3 { font-size: 0.95rem; }
@@ -354,7 +369,6 @@ const downloadPDF = async () => {
 /* Mobile / Small Tablets */
 @media (min-width: 481px) and (max-width: 768px) {
   .cv-wrapper { flex-direction: column; }
-  .main-content { margin-left: 0; padding: 2.5rem 1.2rem 90px 1.2rem; } /* extra top padding */
   .download-btn {
     position: fixed;
     top: 1rem;
@@ -362,8 +376,9 @@ const downloadPDF = async () => {
     padding: 0.4rem 0.8rem;
     font-size: 0.85rem;
   }
-  .cv-name { font-size: 2rem; }
-  .cv-role { font-size: 1rem; }
+  .main-content { padding: 1.5rem 1.2rem; }
+  .cv-name { font-size: 1.6rem; }
+  .cv-role { font-size: 1.1rem; }
   .section-title { font-size: 1.25rem; margin-bottom: 0.5rem; }
   .summary, .skills li, .cv-section ul li { font-size: 0.9rem; line-height: 1.45; }
   .job h3 { font-size: 1rem; }
