@@ -265,11 +265,11 @@ body.light-mode { --project-title-color: #333; }
   cursor: pointer;
   font-size: 0.8rem;
   transition: 0.3s;
+  color: #fff;
 }
 .demo-btn {
   background: linear-gradient(135deg, #e78f0ad2, #a87835);
   box-shadow: 0 6px 18px rgb(170, 124, 55);
-  color:#333;
 }
 .demo-btn:hover {
   transform: scale(1.05);
@@ -278,7 +278,6 @@ body.light-mode { --project-title-color: #333; }
 .figma-btn {
   background: linear-gradient(135deg, #0d618f, #1089c6b9);
   box-shadow: 0 6px 18px rgba(19,174,251,0.4);
-  color: #333;
 }
 .figma-btn:hover {
   transform: scale(1.05);
@@ -287,7 +286,6 @@ body.light-mode { --project-title-color: #333; }
 .open-btn {
   background: linear-gradient(135deg, #555, #666666);
   box-shadow: 0 6px 18px rgba(115, 114, 114, 0.458);
-  color:#333
 }
 .open-btn:hover {
   transform: scale(1.05);
