@@ -278,7 +278,7 @@ body.light-mode .page-title {
   text-align: center; 
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-  margin-left: 4rem;
+  margin-left: 2rem;
 }
 .project-card:hover { 
   transform: translateY(-3px) scale(1.03);
