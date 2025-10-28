@@ -405,6 +405,22 @@ body.light-mode { --project-title-color: #333; }
   font-size: 1.3rem; 
 }
 
+/* Theme toggle */
+.theme-toggle {
+  position: fixed;
+  top: 1.5vh;
+  left: 1.5vw;
+  width: clamp(35px, 5.5vw, 60px);
+  z-index: 1100;
+  cursor: pointer;
+}
+.theme-toggle img {
+  width: 100%;
+}
+.theme-toggle:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
 
 /* Responsive Grid */
 @media (max-width: 1200px) {

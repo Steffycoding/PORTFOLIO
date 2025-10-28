@@ -42,7 +42,7 @@ const { aboutText } = useAbout()
   position: fixed;
   top: 1.5vh;
   left: 1.5vw;
-  width: clamp(40px, 6vw, 70px);
+  width: clamp(35px, 5.5vw, 60px);
   z-index: 1100;
   cursor: pointer;
 }
@@ -50,7 +50,7 @@ const { aboutText } = useAbout()
   width: 100%;
 }
 .theme-toggle:hover {
-  transform: scale(1.12);
+  transform: scale(1.1);
   transition: transform 0.2s ease;
 }
 
