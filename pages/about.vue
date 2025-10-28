@@ -1,9 +1,6 @@
 <template>
   <v-app>
     <v-main class="about-page">
-      <!-- Pulse and digital lines background -->
-      <PulseAndLines />
-
       <!-- Theme Toggle Component -->
       <ThemeToggle class="theme-toggle" />
 
@@ -26,8 +23,6 @@
 import Sidebar from '~/components/Sidebar.vue'
 import ThemeToggle from '~/components/ThemeToggle.vue'
 import { useAbout } from '../composables/useAbout'
-import PulseAndLines from '~/components/PulseAndLines.vue'
-
 
 // Use composable for reactive about text
 const { aboutText } = useAbout()
