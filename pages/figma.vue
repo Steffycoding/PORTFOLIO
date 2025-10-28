@@ -174,7 +174,7 @@ const closeProject = () => { selectedProject.value = null; dialogOpen.value = fa
 /* Page Title */
 .page-title {
   text-align: center;
-  font-size: 3rem; /* smaller, fits sidebar */
+  font-size: 3rem;
   font-weight: 900;
   margin: 2rem 0 1rem 0;
   letter-spacing: 1px;
@@ -202,15 +202,29 @@ body.light-mode .page-title {
 /* Projects Grid */
 .projects-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   justify-items: center;
+  justify-content: center; 
   align-items: start;
   width: 100%;
   max-width: 1000px;
   margin: 1.5rem auto 0 auto;
   padding: 0 1rem;
+  grid-auto-flow: row dense; 
 }
+
+/* Force last row with 1 item to be centered */
+.projects-wrapper > .project-card:nth-last-child(1):nth-child(4) {
+  grid-column: 2 / 3; /* centers the 4th item in a 3-column grid */
+}
+
+/* Force last row with 2 items (5 projects) to center */
+.projects-wrapper > .project-card:nth-last-child(2):nth-child(4),
+.projects-wrapper > .project-card:nth-last-child(1):nth-child(5) {
+  grid-column: auto; /* already handled by justify-content:center */
+}
+
 
 /* Project Card */
 .project-card { 
