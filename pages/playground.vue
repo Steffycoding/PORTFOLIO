@@ -339,6 +339,13 @@ body.light-mode { --project-title-color: #333; }
   .projects-wrapper {
     grid-template-columns: repeat(2, 1fr);
     padding-left: 0;
+    
+  }
+  .project-card {
+    max-width: 90%;
+    padding: 0.7rem;
+    min-height: 120px;
+    margin-right: 1rem;
   }
 }
 
