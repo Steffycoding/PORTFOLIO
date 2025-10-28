@@ -43,7 +43,7 @@ const { links } = useSidebar()
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 1.6rem; 
+  gap: 1.2rem; 
   margin-top: 4.5rem; 
 }
 
@@ -54,7 +54,7 @@ const { links } = useSidebar()
   align-items: center;
   padding: 0.75rem 0; /* smaller padding */
   font-family: 'Inter', 'Poppins', sans-serif;
-  font-size: 1.1rem; /* slightly smaller font */
+  font-size: 1rem; /* slightly smaller font */
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
