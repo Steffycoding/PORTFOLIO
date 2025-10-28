@@ -105,6 +105,7 @@ const adminBtnStyle = computed(() => ({
 
 
 <style scoped>
+
 /* --- Page --- */
 .welcome-page {
   display: flex;
@@ -142,7 +143,7 @@ const adminBtnStyle = computed(() => ({
   display: flex;
   justify-content: center;
   gap: clamp(2rem, 5vw, 10rem);
-  flex-wrap: wrap; /* wrap on smaller screens */
+  flex-wrap: wrap;
   width: 100%;
 }
 
@@ -150,12 +151,12 @@ const adminBtnStyle = computed(() => ({
 .v-btn {
   flex: 1 1 auto;
   min-width: 150px;
-  max-width: 320px;
+  max-width: 250px;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: clamp(1.5rem, 2vw, 3rem) clamp(2.5rem, 4vw, 4.5rem);
-  font-size: clamp(1.2rem, 2vw, 1.9rem);
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
   border-radius: 20px;
   cursor: pointer;
   text-transform: none;
@@ -163,7 +164,7 @@ const adminBtnStyle = computed(() => ({
   position: relative;
   box-shadow: 0 7px 20px rgba(0,0,0,0.35);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin-top: 10rem;
+  margin-top: 8rem;
 }
 .v-btn::after {
   content: '';
