@@ -177,7 +177,7 @@ body.light-mode .page-title {
 .projects-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
+  gap: 1.5rem;
   justify-items: center;
   align-items: start;
   width: 100%;
@@ -198,7 +198,7 @@ body.light-mode .page-title {
   justify-content: center; 
   width: 100%; 
   max-width: 280px; 
-  min-height: 180px; 
+  min-height: 150px; 
   padding: 1.2rem; 
   border-radius: 18px; 
   box-shadow: 0 8px 25px rgba(0,0,0,0.3); 
@@ -291,7 +291,7 @@ body.light-mode { --project-title-color: #333; }
 @media (max-width: 600px) {
   .projects-wrapper {
     grid-template-columns: 1fr;
-    gap: 0.8rem;
+    gap: 0.6rem;
   }
   .page-title {
     font-size: 1.9rem;
@@ -300,7 +300,7 @@ body.light-mode { --project-title-color: #333; }
   .project-card {
     max-width: 90%;
     padding: 0.7rem;
-    min-height: 130px;
+    min-height: 120px;
   }
   .page-btn, .open-btn, .download-btn {
     padding: 0.35rem 0.7rem;
