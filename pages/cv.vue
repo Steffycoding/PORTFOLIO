@@ -311,14 +311,14 @@ const downloadPDF = async () => {
 
 .stack {
   display: flex;
-  flex-wrap: wrap;       /* allow wrapping */
-  gap: 1.2rem;           /* spacing between columns */
+  flex-wrap: wrap;      
+  gap: 1.2rem;           
   justify-content: flex-start;
 }
 
 .stack > div {
-  flex: 1 1 250px;       /* grow, shrink, base width */
-  min-width: 0;          /* prevents overflow */
+  flex: 1 1 250px;       
+  min-width: 0;         
 }
 
 .stack h3 {
@@ -332,9 +332,9 @@ const downloadPDF = async () => {
 /* Small Mobile Devices */
 @media (max-width: 480px) {
   .cv-wrapper { flex-direction: column; padding-top: 1rem; }
-  .main-content { margin-left: 0; padding: 2.5rem 1rem 80px 1rem; } /* extra top padding for download button */
+  .main-content { margin-left: 0; padding: 2.5rem 1rem 80px 1rem; }
   .download-btn {
-    position: fixed;      /* fix to viewport */
+    position: fixed;     
     top: 0.8rem;
     right: 0.8rem;
     padding: 0.35rem 0.7rem;
@@ -354,7 +354,7 @@ const downloadPDF = async () => {
 /* Mobile / Small Tablets */
 @media (min-width: 481px) and (max-width: 768px) {
   .cv-wrapper { flex-direction: column; }
-  .main-content { margin-left: 0; padding: 2.5rem 1.2rem 90px 1.2rem; } /* extra top padding */
+  .main-content { margin-left: 0; padding: 2.5rem 1.2rem 90px 1.2rem; }
   .download-btn {
     position: fixed;
     top: 1rem;
