@@ -112,7 +112,7 @@ const { links } = useSidebar()
 
   .sidebar-btn {
     flex: 1;
-    font-size: 0.5rem;
+    font-size: 0.7rem;
     padding: 0.50rem;
     font-weight: 600;
     border-left: none;
