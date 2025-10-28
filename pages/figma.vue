@@ -164,28 +164,6 @@ const pagedProjects = computed(() => {
 const openProject = (project: Project) => { selectedProject.value = project; dialogOpen.value = true }
 const closeProject = () => { selectedProject.value = null; dialogOpen.value = false }
 
-// Save to localStorage
-const saveToLocalStorage = () => {
-  localStorage.setItem('projects', JSON.stringify(projects.value))
-}
-
-// Add/Edit project
-const saveProject = (project: Project, editingId: string | null = null) => {
-  if (editingId) {
-    const index = projects.value.findIndex(p => p.id === editingId)
-    if (index !== -1) projects.value[index] = { ...project, id: editingId }
-  } else {
-    const newId = projects.value.length ? (Math.max(...projects.value.map(p => Number(p.id))) + 1).toString() : '1'
-    projects.value.push({ ...project, id: newId })
-  }
-  saveToLocalStorage()
-}
-
-// Delete project
-const deleteProject = (id: string) => {
-  projects.value = projects.value.filter(p => p.id !== id)
-  saveToLocalStorage()
-}
 </script>
 
 
@@ -220,32 +198,6 @@ const deleteProject = (id: string) => {
 body.light-mode .page-title {
   color: #137CB5;
 }
-
-/* Tags */
-.tags-container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-bottom: 1.5rem;
-}
-.tag-btn {
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  border: none;
-  background: #0f6793;
-  color: #fff;
-  cursor: pointer;
-  font-size: 0.75rem;
-  font-weight: 500;
-  transition: 0.3s;
-}
-.tag-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(24, 95, 131, 0.4);
-}
-.tag-btn.active { background: #E78F0A; }
-.tag-btn.clear { background: #777; }
 
 /* Projects Grid */
 .projects-wrapper {
@@ -301,11 +253,12 @@ body.light-mode .page-title {
   max-height: 2.4em;
 }
 :root { --project-title-color: #fff; }
-body.light-mode { --project-title-color: #333; }
+body.light-mode { --project-title-color: #333;
+color: #221e1e; }
 
 /* Card Buttons */
 .card-buttons { display: flex; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap; }
-.demo-btn, .figma-btn, .open-btn, .download-btn {
+.demo-btn, .figma-btn, .open-btn {
   padding: 0.35rem 0.8rem;
   border-radius: 8px;
   border: none;
@@ -315,8 +268,8 @@ body.light-mode { --project-title-color: #333; }
   transition: 0.3s;
 }
 .demo-btn {
-  background: linear-gradient(135deg, #E78F0A, #FFB347);
-  box-shadow: 0 6px 18px rgba(231,143,10,0.4);
+  background: linear-gradient(135deg, #e78f0ad2, #e89e38e3);
+  box-shadow: 0 6px 18px rgba(199, 120, 2, 0.627);
 }
 .demo-btn:hover {
   transform: scale(1.05);
@@ -338,14 +291,7 @@ body.light-mode { --project-title-color: #333; }
   transform: scale(1.05);
   box-shadow: 0 8px 25px rgba(0,0,0,0.5);
 }
-.download-btn {
-  background: #E78F0A;
-  color: #fff;
-}
-.download-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
+
 
 /* Modal Close Button */
 .modal-close-btn {
@@ -380,8 +326,7 @@ body.light-mode { --project-title-color: #333; }
 }
 .modal-buttons .demo-btn,
 .modal-buttons .figma-btn,
-.modal-buttons .close-btn,
-.modal-buttons .github-btn {
+.modal-buttons .close-btn {
   font-size: 0.85rem;
   padding: 0.45rem 1rem;
   border-radius: 10px;
@@ -389,8 +334,7 @@ body.light-mode { --project-title-color: #333; }
   transition: 0.3s;
 }
 .close-btn { background: #E78F0A; color: #fff; }
-.github-btn { background: #13AEFB; color: #fff; }
-.close-btn:hover, .github-btn:hover {
+.close-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
@@ -604,7 +548,6 @@ body.light-mode { --project-title-color: #333; }
     padding: 0.35rem 0.8rem;
   }
 }
-
 
 
 </style>
