@@ -253,8 +253,7 @@ body.light-mode .page-title {
   max-height: 2.4em;
 }
 :root { --project-title-color: #fff; }
-body.light-mode { --project-title-color: #333;
-color: #221e1e; }
+body.light-mode { --project-title-color: #333; -figma-btn-color: #fff; -demo-btn:#363535; -open-btn:#333; }
 
 /* Card Buttons */
 .card-buttons { display: flex; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap; }
