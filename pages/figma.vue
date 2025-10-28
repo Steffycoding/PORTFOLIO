@@ -252,9 +252,8 @@ body.light-mode .page-title {
   line-height: 1.2em;
   max-height: 2.4em;
 }
-:root { --project-title-color: #fff; -figma-btn-color: #ffffff; -demo-btn:#ffffff; -open-btn:#ffffff; }
-body.light-mode { --project-title-color: #333; -figma-btn-color: #333; -demo-btn:#333; -open-btn:#333; }
-body.dark-mode { --project-title-color: #fff; -figma-btn-color: #ffffff; -demo-btn:#ffffff; -open-btn:#ffffff; }
+:root { --project-title-color: #fff;}
+body.light-mode { --project-title-color: #333; }
 
 /* Card Buttons */
 .card-buttons { display: flex; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap; }
@@ -270,6 +269,7 @@ body.dark-mode { --project-title-color: #fff; -figma-btn-color: #ffffff; -demo-b
 .demo-btn {
   background: linear-gradient(135deg, #e78f0ad2, #a87835);
   box-shadow: 0 6px 18px rgb(170, 124, 55);
+  color:#333;
 }
 .demo-btn:hover {
   transform: scale(1.05);
@@ -278,6 +278,7 @@ body.dark-mode { --project-title-color: #fff; -figma-btn-color: #ffffff; -demo-b
 .figma-btn {
   background: linear-gradient(135deg, #0d618f, #1089c6b9);
   box-shadow: 0 6px 18px rgba(19,174,251,0.4);
+  color: #333;
 }
 .figma-btn:hover {
   transform: scale(1.05);
@@ -286,6 +287,7 @@ body.dark-mode { --project-title-color: #fff; -figma-btn-color: #ffffff; -demo-b
 .open-btn {
   background: linear-gradient(135deg, #555, #666666);
   box-shadow: 0 6px 18px rgba(115, 114, 114, 0.458);
+  color:#333
 }
 .open-btn:hover {
   transform: scale(1.05);
