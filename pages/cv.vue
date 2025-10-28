@@ -243,7 +243,7 @@ const downloadPDF = async () => {
   max-width: 1400px;
   margin: 0 auto;
   flex: 1;
-  padding-top: 2rem;
+  padding-top: 1.5rem; /* reduced top padding */
   overflow: hidden;
   position: relative;
 }
@@ -256,7 +256,7 @@ const downloadPDF = async () => {
   background-color: #137CB5;
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.45rem 0.9rem;
   border-radius: 5px;
   cursor: pointer;
   font-weight: 600;
@@ -271,7 +271,7 @@ const downloadPDF = async () => {
 .main-content {
   margin-left: clamp(220px, 20%, 300px);
   flex: 1;
-  padding: 1.5rem 2rem;
+  padding: 1rem 2rem; /* smaller top padding for tighter spacing */
   text-align: left;
   overflow: hidden;
   position: relative;
@@ -285,144 +285,171 @@ const downloadPDF = async () => {
   min-height: 100vh;
 }
 
-/* Sections & Typography */
-.cv-header { text-align: center; margin-bottom: 1rem; }
-.cv-name { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; color: #E78F0A; }
-.cv-role { font-size: 1.5rem; color: #13AEFB; font-weight: 500; }
+/* CV Header */
+.cv-header {
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
+.cv-name {
+  font-size: clamp(1.6rem, 3vw, 2.2rem); /* smaller, balanced */
+  font-weight: 800;
+  color: #E78F0A;
+  margin-bottom: 0.2rem;
+}
+.cv-role {
+  font-size: 1.2rem;
+  color: #13AEFB;
+  font-weight: 500;
+}
 
-.cv-section { margin-bottom: 1.2rem; }
+/* Sections */
+.cv-section {
+  margin-bottom: 1rem;
+}
 .section-title {
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: #E78F0A;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
   border-bottom: 2px solid rgba(231, 143, 10, 0.4);
   padding-bottom: 0.2rem;
 }
 
-.job { margin-bottom: 1rem; }
-.job h3 { font-size: 1.05rem; font-weight: 600; }
-.date { font-size: 0.85rem; color: gray; display: block; margin-bottom: 0.2rem; }
-
-.summary { font-size: 0.95rem; line-height: 1.5; text-align: justify; }
-
-.skills, .cv-section ul { list-style: none; padding: 0; margin: 0; }
-.skills li, .cv-section ul li { margin-bottom: 0.4rem; font-size: 0.95rem; }
-
-.stack {
-  display: flex;
-  flex-wrap: wrap;      
-  gap: 1.2rem;           
-  justify-content: flex-start;
+/* Job/Experience */
+.job {
+  margin-bottom: 0.8rem;
 }
-
-.stack > div {
-  flex: 1 1 250px;       
-  min-width: 0;         
+.job h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.1rem;
 }
-
-.stack h3 {
-  font-size: 1.05rem;
+.date {
+  font-size: 0.8rem;
+  color: gray;
+  display: block;
   margin-bottom: 0.25rem;
 }
-.stack ul { padding-left: 1rem; }
+
+/* Summary */
+.summary {
+  font-size: 0.9rem;
+  line-height: 1.45;
+  text-align: justify;
+}
+
+/* Lists */
+.skills, .cv-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.skills li, .cv-section ul li {
+  margin-bottom: 0.35rem;
+  font-size: 0.9rem;
+}
+
+/* Skills Stack */
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+.stack > div {
+  flex: 1 1 250px;
+  min-width: 0;
+}
+.stack h3 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+.stack ul {
+  padding-left: 1rem;
+}
 
 /* ---------------- Responsive ---------------- */
 
 /* Small Mobile Devices */
 @media (max-width: 480px) {
   .cv-wrapper { flex-direction: column; padding-top: 1rem; }
-  .main-content { margin-left: 0; padding: 2.5rem 1rem 80px 1rem; }
+  .main-content { margin-left: 0; padding: 2rem 1rem 60px 1rem; }
   .download-btn {
-    position: fixed;     
-    top: 0.8rem;
-    right: 0.8rem;
-    padding: 0.35rem 0.7rem;
-    font-size: 0.8rem;
+    position: fixed;
+    top: 0.6rem;
+    right: 0.6rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
   }
-  .cv-name { font-size: 1.6rem; }
+  .cv-name { font-size: 1.4rem; }
   .cv-role { font-size: 0.95rem; }
-  .section-title { font-size: 1.1rem; margin-bottom: 0.4rem; }
-  .summary, .skills li, .cv-section ul li { font-size: 0.85rem; line-height: 1.4; }
-  .job h3 { font-size: 0.95rem; }
-  .date { font-size: 0.75rem; margin-bottom: 0.15rem; }
-  .stack { flex-direction: column; gap: 0.8rem; }
-  .stack > div { flex-basis: 100%; min-width: 0; }
-  .stack h3 { font-size: 0.95rem; margin-bottom: 0.2rem; }
+  .section-title { font-size: 1rem; margin-bottom: 0.35rem; }
+  .summary, .skills li, .cv-section ul li { font-size: 0.8rem; line-height: 1.35; }
+  .job h3 { font-size: 0.9rem; }
+  .date { font-size: 0.7rem; }
+  .stack { flex-direction: column; gap: 0.6rem; }
+  .stack > div { flex-basis: 100%; }
+  .stack h3 { font-size: 0.9rem; }
 }
 
 /* Mobile / Small Tablets */
 @media (min-width: 481px) and (max-width: 768px) {
-  .cv-wrapper { flex-direction: column; }
-  .main-content { margin-left: 0; padding: 2.5rem 1.2rem 90px 1.2rem; }
-  .download-btn {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    padding: 0.4rem 0.8rem;
-    font-size: 0.85rem;
-  }
-  .cv-name { font-size: 2rem; }
+  .main-content { margin-left: 0; padding: 2rem 1.2rem 70px 1.2rem; }
+  .download-btn { top: 0.8rem; right: 1rem; padding: 0.35rem 0.7rem; font-size: 0.8rem; }
+  .cv-name { font-size: 1.6rem; }
   .cv-role { font-size: 1rem; }
-  .section-title { font-size: 1.25rem; margin-bottom: 0.5rem; }
-  .summary, .skills li, .cv-section ul li { font-size: 0.9rem; line-height: 1.45; }
-  .job h3 { font-size: 1rem; }
-  .date { font-size: 0.8rem; margin-bottom: 0.15rem; }
-  .stack { flex-wrap: wrap; gap: 1rem; }
-  .stack > div { flex-basis: 45%; min-width: 0; } /* 2 per row */
-  .stack h3 { font-size: 1rem; margin-bottom: 0.25rem; }
+  .section-title { font-size: 1.15rem; }
+  .summary, .skills li, .cv-section ul li { font-size: 0.85rem; line-height: 1.4; }
+  .job h3 { font-size: 0.95rem; }
+  .date { font-size: 0.75rem; }
+  .stack > div { flex-basis: 45%; }
+  .stack h3 { font-size: 0.95rem; }
 }
 
 /* Tablets / Laptops */
 @media (min-width: 769px) and (max-width: 1024px) {
-  .main-content { margin-left: clamp(180px, 18%, 250px); padding: 2.5rem 1.5rem; }
-  .download-btn { position: fixed; top: 1.2rem; right: 1.2rem; }
-  .cv-name { font-size: 2.4rem; }
+  .main-content { margin-left: clamp(180px, 18%, 250px); padding: 2rem 1.5rem; }
+  .cv-name { font-size: 2rem; }
   .cv-role { font-size: 1.05rem; }
-  .section-title { font-size: 1.35rem; }
-  .summary, .skills li, .cv-section ul li { font-size: 1rem; line-height: 1.6; }
-  .job h3 { font-size: 1.05rem; }
-  .date { font-size: 0.85rem; }
-  .stack > div { flex-basis: 30%; min-width: 0; } /* 3 per row */
-  .stack h3 { font-size: 1rem; margin-bottom: 0.25rem; }
+  .section-title { font-size: 1.25rem; }
+  .summary, .skills li, .cv-section ul li { font-size: 0.95rem; line-height: 1.5; }
+  .job h3 { font-size: 1rem; }
+  .date { font-size: 0.8rem; }
+  .stack > div { flex-basis: 30%; }
+  .stack h3 { font-size: 1rem; }
 }
 
 /* Laptops / Small Desktops */
 @media (min-width: 1025px) and (max-width: 1280px) {
-  .main-content { margin-left: clamp(200px, 20%, 280px); padding: 2.5rem 2rem; }
-  .download-btn { position: fixed; top: 1.2rem; right: 2rem; }
-  .cv-name { font-size: 2.5rem;}
+  .main-content { margin-left: clamp(200px, 20%, 280px); padding: 2rem 2rem; }
+  .cv-name { font-size: 2.2rem; }
   .cv-role { font-size: 1.05rem; }
-  .section-title { font-size: 1.4rem; }
-  .summary, .skills li, .cv-section ul li { font-size: 1rem; line-height: 1.6; }
+  .section-title { font-size: 1.3rem; }
+  .summary, .skills li, .cv-section ul li { font-size: 0.95rem; line-height: 1.5; }
   .job h3 { font-size: 1.05rem; }
-  .date { font-size: 0.85rem; margin-bottom: 0.2rem; }
-  .stack > div { flex-basis: 25%; min-width: 0; } /* 4 per row */
-  .stack h3 { font-size: 1rem; margin-bottom: 0.25rem; }
+  .date { font-size: 0.8rem; }
+  .stack > div { flex-basis: 25%; }
 }
 
 /* Large Screens */
 @media (min-width: 1281px) {
-  .main-content { margin-left: clamp(220px, 22%, 300px); padding: 2.5rem 2rem; }
-  .download-btn { position: fixed; top: 1.5rem; right: 2rem; }
-  .cv-name { font-size: 2.8rem; }
+  .main-content { margin-left: clamp(220px, 22%, 300px); padding: 2rem 2rem; }
+  .cv-name { font-size: 2.4rem; }
   .cv-role { font-size: 1.1rem; }
-  .section-title { font-size: 1.5rem; }
-  .summary, .skills li, .cv-section ul li { font-size: 1.15rem; line-height: 1.7; }
-  .stack > div { flex-basis: 23%; min-width: 0; }
-  .stack h3 { font-size: 1.05rem; }
+  .section-title { font-size: 1.4rem; }
+  .summary, .skills li, .cv-section ul li { font-size: 1rem; line-height: 1.55; }
+  .stack > div { flex-basis: 23%; }
 }
 
 /* Extra Large Screens */
 @media (min-width: 1601px) {
-  .main-content { margin-left: clamp(220px, 22%, 300px); padding: 2.5rem 2rem; }
-  .download-btn { position: fixed; top: 1.5rem; right: 2rem; }
-  .cv-name { font-size: 3rem; }
-  .cv-role { font-size: 1.2rem; }
-  .section-title { font-size: 1.6rem; }
-  .summary, .skills li, .cv-section ul li { font-size: 1.25rem; line-height: 1.8; }
-  .stack > div { flex-basis: 20%; min-width: 0; }
-  .stack h3 { font-size: 1.1rem; }
+  .main-content { margin-left: clamp(220px, 22%, 300px); padding: 2rem 2rem; }
+  .cv-name { font-size: 2.6rem; }
+  .cv-role { font-size: 1.15rem; }
+  .section-title { font-size: 1.5rem; }
+  .summary, .skills li, .cv-section ul li { font-size: 1.05rem; line-height: 1.6; }
+  .stack > div { flex-basis: 20%; }
 }
+
 
 </style>
