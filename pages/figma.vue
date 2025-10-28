@@ -278,7 +278,6 @@ body.light-mode .page-title {
   text-align: center; 
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-  margin-left: 8rem;
 }
 .project-card:hover { 
   transform: translateY(-3px) scale(1.03);
@@ -452,6 +451,12 @@ body.light-mode { --project-title-color: #333; }
     grid-template-columns: repeat(2, 1fr);
     padding-left: 0;
   }
+  .project-card {
+    max-width: 90%;
+    padding: 0.7rem;
+    min-height: 120px;
+    margin-right: 1rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -486,6 +491,7 @@ body.light-mode { --project-title-color: #333; }
     max-width: 90%;
     padding: 0.7rem;
     min-height: 120px;
+    margin-right: 1rem;
   }
   .page-btn, .open-btn, .download-btn {
     padding: 0.35rem 0.7rem;
