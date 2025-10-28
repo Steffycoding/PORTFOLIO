@@ -131,7 +131,7 @@ const adminBtnStyle = computed(() => ({
   max-width: 100%;
 }
 .title {
-  font-size: clamp(2.5rem, 6vw, 6rem);
+  font-size: clamp(2rem, 4vw, 4rem);
   font-weight: 900;
   line-height: 1.1;
   overflow: hidden;
