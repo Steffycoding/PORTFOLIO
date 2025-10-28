@@ -52,9 +52,9 @@ const { links } = useSidebar()
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.75rem 0; /* smaller padding */
+  padding: 0.75rem 0;
   font-family: 'Inter', 'Poppins', sans-serif;
-  font-size: 1.1rem; /* slightly smaller font */
+  font-size: 1.1rem;
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -67,53 +67,29 @@ const { links } = useSidebar()
   text-shadow: 0 0 5px rgba(19, 174, 251, 0.15);
 }
 
+/* Hover effect - light grayish-blue */
 .sidebar-btn:hover {
-  background: rgba(231, 143, 10, 0.18);
-  border-left: 4px solid #E78F0A;
+  background: rgba(173, 190, 210, 0.3); /* soft gray-blue */
+  border-left: 4px solid rgba(173, 190, 210, 0.5);
   color: #fff;
   transform: translateX(4px);
-  box-shadow: 0 3px 10px rgba(231, 143, 10, 0.2);
+  box-shadow: 0 3px 10px rgba(173, 190, 210, 0.2);
 }
+
 
 .sidebar-btn.active {
-  background: rgba(231, 143, 10, 0.22);
-  border-left: 4px solid #E78F0A;
+  background: rgba(173, 190, 210, 0.25);
+  border-left: 4px solid rgba(173, 190, 210, 0.5);
   color: #fff;
-  box-shadow: 0 4px 12px rgba(231, 143, 10, 0.25);
+  box-shadow: 0 4px 12px rgba(173, 190, 210, 0.25);
 }
 
-/* ----------------- Responsive (Mobile Footer Nav) ----------------- */
+/* ----------------- Mobile Footer Nav ----------------- */
 @media (max-width: 768px) {
-  .sidebar {
-    position: fixed;
-    bottom: 0;
-    top: auto;
-    left: 0;
-    right: 0;
-    min-height: auto;
-    height: 75px;
-    width: 100%;
-    border-radius: 1rem 1rem 0 0;
-    padding: 0.5rem 1rem;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    box-shadow: 0 -3px 15px rgba(0,0,0,0.15);
-    backdrop-filter: blur(20px);
-  }
-
-  .sidebar-nav {
-    flex-direction: row;
-    gap: 0.6rem;
-    width: 100%;
-    justify-content: space-around;
-    margin-top: 0; /* reset for mobile */
-  }
-
   .sidebar-btn {
     flex: 1;
-    font-size: 0.9rem;
-    padding: 0.55rem;
+    font-size: 0.85rem;
+    padding: 0.45rem 0;
     font-weight: 600;
     border-left: none;
     border-bottom: 3px solid transparent;
@@ -123,16 +99,17 @@ const { links } = useSidebar()
   }
 
   .sidebar-btn:hover {
-    transform: translateY(-2px);
-    background: rgba(231, 143, 10, 0.18);
+    transform: translateY(-1px);
+    background: rgba(173, 190, 210, 0.25);
   }
 
   .sidebar-btn.active {
-    border-bottom: 3px solid #E78F0A;
-    background: rgba(231, 143, 10, 0.15);
+    border-bottom: 3px solid rgba(173, 190, 210, 0.6);
+    background: rgba(173, 190, 210, 0.2);
     color: #fff;
   }
 }
+
 
 /* ----------------- Tablet & Medium Screens ----------------- */
 @media (min-width: 769px) and (max-width: 1280px) {
