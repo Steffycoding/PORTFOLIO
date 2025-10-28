@@ -220,15 +220,15 @@ body.light-mode .page-title {
   align-items: center; 
   justify-content: center; 
   width: 100%; 
-  max-width: 220px; 
-  min-height: 130px; 
+  max-width: 250px; 
+  min-height: 150px; 
   padding: 1rem; 
   border-radius: 12px; 
   box-shadow: 0 6px 18px rgba(0,0,0,0.25); 
   text-align: center; 
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-  margin-left: 5rem;
+  margin-left: 8rem;
 }
 .project-card:hover { 
   transform: translateY(-3px) scale(1.03);
