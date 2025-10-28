@@ -143,7 +143,6 @@ const fetchGitHubProjects = async (username: string) => {
 </script>
 
 <style scoped>
-
 /* Page Title */
 .page-title {
   text-align: center;
@@ -171,7 +170,6 @@ const fetchGitHubProjects = async (username: string) => {
 body.light-mode .page-title {
   color: #137CB5;
 }
-
 
 /* Tags */
 .tags-container {
@@ -208,7 +206,7 @@ body.light-mode .page-title {
   align-items: start;
   width: 100%;
   max-width: 1000px;
-  margin: 1.5rem 1rem 0rem 1;
+  margin: 1.5rem auto 0 auto;
   padding: 0 1rem;
 }
 
@@ -230,7 +228,6 @@ body.light-mode .page-title {
   text-align: center; 
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-  margin-left: 5rem;
 }
 .project-card:hover { 
   transform: translateY(-3px) scale(1.03);
@@ -254,7 +251,7 @@ body.light-mode .page-title {
   max-height: 2.4em;
 }
 :root { --project-title-color: #fff; }
-body.light-mode { --project-title-color: #333; -project-card-background: rgba(102, 96, 96, 0.9); }
+body.light-mode { --project-title-color: #333; --project-card-background:rgb(127, 127, 127); }
 
 /* Card Buttons */
 .card-buttons { display: flex; gap: 0.5rem; margin-top: 0.8rem; }
@@ -329,22 +326,6 @@ body.light-mode { --project-title-color: #333; -project-card-background: rgba(10
 .github-btn { background: #13AEFB; color: #fff; }
 .close-btn:hover, .github-btn:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
 
-/* Theme toggle */
-.theme-toggle {
-  position: fixed;
-  top: 1.5vh;
-  left: 1.5vw;
-  width: clamp(35px, 5.5vw, 60px);
-  z-index: 1100;
-  cursor: pointer;
-}
-.theme-toggle img {
-  width: 100%;
-}
-.theme-toggle:hover {
-  transform: scale(1.1);
-  transition: transform 0.2s ease;
-}
 
 /* Responsive Grid */
 @media (max-width: 1200px) {
