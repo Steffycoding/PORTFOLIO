@@ -278,7 +278,7 @@ body.light-mode .page-title {
   text-align: center; 
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-  margin-left: 2rem;
+  margin-left: 8rem;
 }
 .project-card:hover { 
   transform: translateY(-3px) scale(1.03);
@@ -476,7 +476,7 @@ body.light-mode { --project-title-color: #333; }
 @media (max-width: 600px) {
   .projects-wrapper {
     grid-template-columns: 1fr;
-    gap: 0.8rem;
+    gap: 0.6rem;
   }
   .page-title {
     font-size: 1.9rem;
@@ -485,9 +485,9 @@ body.light-mode { --project-title-color: #333; }
   .project-card {
     max-width: 90%;
     padding: 0.7rem;
-    min-height: 130px;
+    min-height: 120px;
   }
-  .page-btn, .open-btn, .view-btn {
+  .page-btn, .open-btn, .download-btn {
     padding: 0.35rem 0.7rem;
     font-size: 0.85rem;
   }
