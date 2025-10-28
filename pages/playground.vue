@@ -202,14 +202,13 @@ body.light-mode .page-title {
 .projects-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  justify-items: center;
+  justify-content: center; 
   align-items: start;
   width: 100%;
-  max-width: 1000px;
   margin: 1.5rem auto 0 auto;
   padding: 0 1rem;
 }
+
 
 /* Project Card */
 .project-card { 
@@ -229,6 +228,7 @@ body.light-mode .page-title {
   text-align: center; 
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  margin-left: 1.5rem;
 }
 .project-card:hover { 
   transform: translateY(-3px) scale(1.03);
