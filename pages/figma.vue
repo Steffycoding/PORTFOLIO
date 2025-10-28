@@ -252,7 +252,7 @@ body.light-mode .page-title {
   line-height: 1.2em;
   max-height: 2.4em;
 }
-:root { --project-title-color: #fff; }
+:root { --project-title-color: #fff; -figma-btn-color: #ffffff; -demo-btn:#ffffff; -open-btn:#ffffff; }
 body.light-mode { --project-title-color: #333; -figma-btn-color: #fff; -demo-btn:#363535; -open-btn:#333; }
 
 /* Card Buttons */
