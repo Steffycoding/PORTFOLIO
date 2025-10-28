@@ -136,13 +136,14 @@ const adminBtnStyle = computed(() => ({
   font-weight: 900;
   line-height: 1.2;
   overflow: hidden;
+  margin-bottom: 2rem;
 }
 
 /* Button Group */
 .button-group {
   display: flex;
   justify-content: center;
-  gap: clamp(2rem, 5vw, 10rem);
+  gap: clamp(2rem, 4vw, 8rem);
   flex-wrap: wrap;
   width: 100%;
 }
@@ -164,7 +165,7 @@ const adminBtnStyle = computed(() => ({
   position: relative;
   box-shadow: 0 7px 20px rgba(0,0,0,0.35);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin-top: 6rem;
+  margin-top: 3rem;
 }
 .v-btn::after {
   content: '';
