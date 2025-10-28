@@ -151,7 +151,7 @@ const adminBtnStyle = computed(() => ({
 .v-btn {
   flex: 1 1 auto;
   min-width: 150px;
-  max-width: 250px;
+  max-width: 200px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -164,7 +164,7 @@ const adminBtnStyle = computed(() => ({
   position: relative;
   box-shadow: 0 7px 20px rgba(0,0,0,0.35);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin-top: 8rem;
+  margin-top: 6rem;
 }
 .v-btn::after {
   content: '';
