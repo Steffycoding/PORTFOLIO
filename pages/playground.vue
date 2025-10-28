@@ -352,10 +352,14 @@ body.light-mode { --project-title-color: #333; }
     font-size: 2.2rem;
     margin: 1.8rem 0 1rem 0;
   }
-  .page-btn, .open-btn, .download-btn {
+  .page-btn, .open-btn, .view-btn {
     padding: 0.4rem 0.8rem;
     font-size: 0.9rem;
   }
+  .demo-btn, .figma-btn, .open-btn, .modal-close-btn {
+    font-size: 0.85rem;
+    padding: 0.45rem 0.9rem;
+  }  
 }
 
 @media (max-width: 600px) {
@@ -377,6 +381,7 @@ body.light-mode { --project-title-color: #333; }
     font-size: 0.85rem;
   }
 }
+
 
 /* Specific Devices */
 @media (width: 1024px) and (height: 600px) {
