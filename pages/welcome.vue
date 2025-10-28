@@ -7,7 +7,8 @@
 
         <v-container class="welcome-container" fluid>
           <h1 class="title" :style="titleStyle">
-            Welcome to My Portfolio
+            Welcome to My <br> 
+              Portfolio!
           </h1>
 
           <div class="button-group">
@@ -46,7 +47,6 @@ const theme = useTheme()
 const isMounted = ref(false)
 onMounted(() => {
   isMounted.value = true
-  // Removed automatic redirect on page load
 })
 
 function goGuest() {
@@ -131,9 +131,9 @@ const adminBtnStyle = computed(() => ({
   max-width: 100%;
 }
 .title {
-  font-size: clamp(2rem, 4vw, 4rem);
+  font-size: clamp(2rem, 4.5vw, 4.5rem);
   font-weight: 900;
-  line-height: 1.1;
+  line-height: 1.2;
   overflow: hidden;
 }
 
