@@ -172,6 +172,7 @@ body.light-mode .page-title {
   color: #137CB5;
 }
 
+
 /* Tags */
 .tags-container {
   display: flex;
@@ -207,7 +208,7 @@ body.light-mode .page-title {
   align-items: start;
   width: 100%;
   max-width: 1000px;
-  margin: 1.5rem 1rem 0rem 1rem;
+  margin: 1.5rem 1rem 0rem 1;
   padding: 0 1rem;
 }
 
@@ -253,7 +254,7 @@ body.light-mode .page-title {
   max-height: 2.4em;
 }
 :root { --project-title-color: #fff; }
-body.light-mode { --project-title-color: #333; -project-card-background: rgba(119, 119, 119, 0.967); }
+body.light-mode { --project-title-color: #333; -project-card-background: rgba(102, 96, 96, 0.9); }
 
 /* Card Buttons */
 .card-buttons { display: flex; gap: 0.5rem; margin-top: 0.8rem; }
