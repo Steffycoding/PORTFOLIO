@@ -252,7 +252,7 @@ body.light-mode .page-title {
   max-height: 2.4em;
 }
 :root { --project-title-color: #fff; }
-body.light-mode { --project-title-color: #333; }
+body.light-mode { --project-title-color: #333; -project-card-background: rgba(255,255,255,0.9); }
 
 /* Card Buttons */
 .card-buttons { display: flex; gap: 0.5rem; margin-top: 0.8rem; }
