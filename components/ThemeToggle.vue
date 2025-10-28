@@ -52,11 +52,9 @@ function toggleTheme() {
 <style>
 .theme-toggle {
   position: fixed;
-  top: 1.5vh;
-  left: 1.5vw;
-  width: clamp(40px, 6vw, 70px); /* tighter min/max for better small screen fit */
-  height: auto;
-  z-index: 1100;
+  top: 1.2vh;
+  left: 1.2vw;
+  width: clamp(30px, 5vw, 60px); 
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -72,7 +70,7 @@ function toggleTheme() {
 
 .theme-toggle:hover {
   transform: scale(1.12);
-  filter: drop-shadow(0 0 8px #13AEFB);
+  filter: drop-shadow(0 0 8px #40748f);
   transition: transform 0.2s ease, filter 0.2s ease;
 }
 
