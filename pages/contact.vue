@@ -80,6 +80,9 @@ const toggleDarkMode = () => { isDarkMode.value = !isDarkMode.value }
   transition: transform 0.2s ease;
 }
 
+:root { --project-title-color: #fff; }
+body.light-mode { background-color: #65686a; }
+
 /* Popup Card */
 .popup-card {
   width: 85%;

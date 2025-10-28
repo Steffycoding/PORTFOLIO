@@ -202,13 +202,14 @@ body.light-mode .page-title {
 .projects-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  justify-content: center; 
+  gap: 1rem;
+  justify-items: center;
   align-items: start;
   width: 100%;
-  margin: 1.5rem auto 0 auto;
+  max-width: 1000px;
+  margin: 1.5rem 1rem 0rem 1rem;
   padding: 0 1rem;
 }
-
 
 /* Project Card */
 .project-card { 
@@ -252,7 +253,7 @@ body.light-mode .page-title {
   max-height: 2.4em;
 }
 :root { --project-title-color: #fff; }
-body.light-mode { --project-title-color: #333; -project-card-background: rgba(255,255,255,0.9); }
+body.light-mode { --project-title-color: #333; -project-card-background: rgba(119, 119, 119, 0.967); }
 
 /* Card Buttons */
 .card-buttons { display: flex; gap: 0.5rem; margin-top: 0.8rem; }
