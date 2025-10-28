@@ -374,7 +374,7 @@ body.light-mode { --project-title-color: #333; }
     max-width: 90%;
     padding: 0.7rem;
     min-height: 120px;
-    margin-right: 2rem;
+    margin-right: 1rem;
   }
   .page-btn, .open-btn, .download-btn {
     padding: 0.35rem 0.7rem;
