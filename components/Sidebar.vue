@@ -68,18 +68,18 @@ const { links } = useSidebar()
 }
 
 .sidebar-btn:hover {
-  background: rgba(231, 143, 10, 0.18);
-  border-left: 4px solid #E78F0A;
+  background: rgba(38, 150, 162, 0.477);
+  border-left: 4px solid #00c7efbc;
   color: #fff;
   transform: translateX(4px);
-  box-shadow: 0 3px 10px rgba(231, 143, 10, 0.2);
+  box-shadow: 0 3px 10px rgba(28, 131, 172, 0.467);
 }
 
 .sidebar-btn.active {
-  background: rgba(231, 143, 10, 0.22);
-  border-left: 4px solid #E78F0A;
+  background: rgba(38, 150, 162, 0.477);
+  border-left: 4px solid #275a81d4;
   color: #fff;
-  box-shadow: 0 4px 12px rgba(231, 143, 10, 0.25);
+  box-shadow: 0 4px 12px rgba(28, 131, 172, 0.467);
 }
 
 /* ----------------- Responsive (Mobile Footer Nav) ----------------- */
@@ -91,7 +91,7 @@ const { links } = useSidebar()
     left: 0;
     right: 0;
     min-height: auto;
-    height: 75px;
+    height: auto;
     width: 100%;
     border-radius: 1rem 1rem 0 0;
     padding: 0.5rem 1rem;
@@ -107,13 +107,13 @@ const { links } = useSidebar()
     gap: 0.6rem;
     width: 100%;
     justify-content: space-around;
-    margin-top: 0; /* reset for mobile */
+    margin-top: 0; 
   }
 
   .sidebar-btn {
     flex: 1;
-    font-size: 0.9rem;
-    padding: 0.55rem;
+    font-size: 0.5rem;
+    padding: 0.50rem;
     font-weight: 600;
     border-left: none;
     border-bottom: 3px solid transparent;
@@ -124,12 +124,12 @@ const { links } = useSidebar()
 
   .sidebar-btn:hover {
     transform: translateY(-2px);
-    background: rgba(231, 143, 10, 0.18);
+    background: rgba(27, 127, 152, 0.46);
   }
 
   .sidebar-btn.active {
-    border-bottom: 3px solid #E78F0A;
-    background: rgba(231, 143, 10, 0.15);
+    border-bottom: 3px solid #1e5d6a65;
+    background: rgb(24, 63, 83);
     color: #fff;
   }
 }
@@ -138,7 +138,7 @@ const { links } = useSidebar()
 @media (min-width: 769px) and (max-width: 1280px) {
   .sidebar-nav {
     gap: 2.2rem;
-    margin-top: 7rem;
+    margin-top: 5rem;
   }
 }
 
@@ -146,7 +146,7 @@ const { links } = useSidebar()
 @media (min-width: 1281px) {
   .sidebar-nav {
     gap: 2.5rem;
-    margin-top: 8rem;
+    margin-top: 6rem;
   }
 }
 
@@ -154,7 +154,7 @@ const { links } = useSidebar()
 @media (min-width: 1600px) {
   .sidebar-nav {
     gap: 3rem;
-    margin-top: 9rem;
+    margin-top: 7rem;
   }
 }
 </style>
