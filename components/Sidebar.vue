@@ -19,7 +19,10 @@ import { useSidebar } from '../composables/UseSidebar'
 const { links } = useSidebar()
 </script>
 
+
 <style scoped>
+
+
 /* ----------------- Sidebar Styling ----------------- */
 .sidebar {
   width: clamp(200px, 18%, 280px);
@@ -28,7 +31,7 @@ const { links } = useSidebar()
   backdrop-filter: blur(10px);
   border-radius: 0 1.2rem 1.2rem 0;
   box-shadow: 2px 0 15px rgba(0,0,0,0.15);
-  padding: 4rem 1.5rem 2rem 1.5rem;
+  padding: 3rem 1.5rem 2rem 1.5rem; /* moved padding top up */
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -40,8 +43,8 @@ const { links } = useSidebar()
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 2rem; /* Increased gap slightly for better spacing */
-  margin-top: 6rem; /* Moved buttons a little higher so first one isn't too low */
+  gap: 1.6rem; 
+  margin-top: 4.5rem; 
 }
 
 /* ----------------- Buttons ----------------- */
@@ -49,9 +52,9 @@ const { links } = useSidebar()
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.95rem 0;
+  padding: 0.75rem 0; /* smaller padding */
   font-family: 'Inter', 'Poppins', sans-serif;
-  font-size: 1.25rem;
+  font-size: 1.1rem; /* slightly smaller font */
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
