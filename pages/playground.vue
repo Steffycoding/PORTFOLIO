@@ -143,6 +143,7 @@ const fetchGitHubProjects = async (username: string) => {
 </script>
 
 <style scoped>
+
 /* Page Title */
 .page-title {
   text-align: center;
@@ -326,6 +327,22 @@ body.light-mode { --project-title-color: #333; }
 .github-btn { background: #13AEFB; color: #fff; }
 .close-btn:hover, .github-btn:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
 
+/* Theme toggle */
+.theme-toggle {
+  position: fixed;
+  top: 1.5vh;
+  left: 1.5vw;
+  width: clamp(35px, 5.5vw, 60px);
+  z-index: 1100;
+  cursor: pointer;
+}
+.theme-toggle img {
+  width: 100%;
+}
+.theme-toggle:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
 
 /* Responsive Grid */
 @media (max-width: 1200px) {
