@@ -5,7 +5,7 @@
       <v-main>
         <ThemeToggle />
         <v-container class="figma-page" fluid>
-          <h1 class="page-title">My Projects</h1>
+          <h1 class="page-title">My Figma Projects</h1>
 
           <!-- Pagination -->
           <div class="pagination-controls">
@@ -233,7 +233,7 @@ body.light-mode .page-title {
   padding: 0.4rem 0.8rem;
   border-radius: 6px;
   border: none;
-  background: #13AEFB;
+  background: #0f6793;
   color: #fff;
   cursor: pointer;
   font-size: 0.75rem;
@@ -242,7 +242,7 @@ body.light-mode .page-title {
 }
 .tag-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(19,174,251,0.4);
+  box-shadow: 0 4px 8px rgba(24, 95, 131, 0.4);
 }
 .tag-btn.active { background: #E78F0A; }
 .tag-btn.clear { background: #777; }
@@ -323,7 +323,7 @@ body.light-mode { --project-title-color: #333; }
   box-shadow: 0 8px 25px rgba(231,143,10,0.6);
 }
 .figma-btn {
-  background: linear-gradient(135deg, #137CB5, #13AEFB);
+  background: linear-gradient(135deg, #044a70, #005681b9);
   box-shadow: 0 6px 18px rgba(19,174,251,0.4);
 }
 .figma-btn:hover {
