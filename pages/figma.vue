@@ -257,7 +257,7 @@ body.light-mode { --project-title-color: #333; }
 
 /* Card Buttons */
 .card-buttons { display: flex; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap; }
-.dark.demo-btn, .dark.demo-btn.figma-btn, .dark.open-btn {
+.dark-mode.demo-btn, .dark-mode.figma-btn, .dark-mode.open-btn {
   padding: 0.35rem 0.8rem;
   border-radius: 8px;
   border: none;
