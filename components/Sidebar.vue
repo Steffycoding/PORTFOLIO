@@ -30,8 +30,8 @@ const { links } = useSidebar()
   background: rgba(var(--v-theme-background-rgb), 0.25);
   backdrop-filter: blur(10px);
   border-radius: 0 1.2rem 1.2rem 0;
-  box-shadow: 2px 0 15px rgba(0,0,0,0.15);
-  padding: 3rem 1.5rem 2rem 1.5rem; /* moved padding top up */
+  box-shadow: 2px 0 12px rgba(0,0,0,0.15);
+  padding: 3rem 1.5rem 2rem 1.5rem; 
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -43,8 +43,8 @@ const { links } = useSidebar()
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem; 
-  margin-top: 4.5rem; 
+  gap: 1.1rem; 
+  margin-top: 4.1rem; 
 }
 
 /* ----------------- Buttons ----------------- */
@@ -52,9 +52,9 @@ const { links } = useSidebar()
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.75rem 0; /* smaller padding */
+  padding: 0.75rem 0; 
   font-family: 'Inter', 'Poppins', sans-serif;
-  font-size: 1.05rem; /* slightly smaller font */
+  font-size: 1.02rem; 
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -69,10 +69,10 @@ const { links } = useSidebar()
 
 .sidebar-btn:hover {
   background: rgba(38, 150, 162, 0.477);
-  border-left: 4px solid #00c7efbc;
+  border-left: 3px solid #00c7efbc;
   color: #fff;
   transform: translateX(4px);
-  box-shadow: 0 3px 10px rgba(28, 131, 172, 0.467);
+  box-shadow: 0 3px 8px rgba(28, 131, 172, 0.467);
 }
 
 .sidebar-btn.active {
@@ -113,7 +113,7 @@ const { links } = useSidebar()
   .sidebar-btn {
     flex: 1;
     font-size: 0.7rem;
-    padding: 0.50rem;
+    padding: 0.40rem;
     font-weight: 600;
     border-left: none;
     border-bottom: 3px solid transparent;
