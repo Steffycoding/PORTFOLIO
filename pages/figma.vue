@@ -179,7 +179,7 @@ const closeProject = () => { selectedProject.value = null; dialogOpen.value = fa
   margin: 2rem 0 1rem 0;
   letter-spacing: 1px;
   position: relative;
-  color: #E78F0A;
+  color: #b5710bf8;
   background: none;
   -webkit-background-clip: unset;
   -webkit-text-fill-color: unset;
@@ -253,7 +253,8 @@ body.light-mode .page-title {
   max-height: 2.4em;
 }
 :root { --project-title-color: #fff; -figma-btn-color: #ffffff; -demo-btn:#ffffff; -open-btn:#ffffff; }
-body.light-mode { --project-title-color: #333; -figma-btn-color: #fff; -demo-btn:#363535; -open-btn:#333; }
+body.light-mode { --project-title-color: #333; -figma-btn-color: #333; -demo-btn:#333; -open-btn:#333; }
+body.dark-mode { --project-title-color: #fff; -figma-btn-color: #ffffff; -demo-btn:#ffffff; -open-btn:#ffffff; }
 
 /* Card Buttons */
 .card-buttons { display: flex; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap; }
@@ -267,28 +268,28 @@ body.light-mode { --project-title-color: #333; -figma-btn-color: #fff; -demo-btn
   transition: 0.3s;
 }
 .demo-btn {
-  background: linear-gradient(135deg, #e78f0ad2, #e89e38e3);
-  box-shadow: 0 6px 18px rgba(199, 120, 2, 0.627);
+  background: linear-gradient(135deg, #e78f0ad2, #a87835);
+  box-shadow: 0 6px 18px rgb(170, 124, 55);
 }
 .demo-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 25px rgba(231,143,10,0.6);
 }
 .figma-btn {
-  background: linear-gradient(135deg, #044a70, #005681b9);
+  background: linear-gradient(135deg, #0d618f, #1089c6b9);
   box-shadow: 0 6px 18px rgba(19,174,251,0.4);
 }
 .figma-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 25px rgba(19,174,251,0.6);
+  box-shadow: 0 8px 25px rgba(10, 59, 84, 0.6);
 }
 .open-btn {
-  background: linear-gradient(135deg, #555, #777);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+  background: linear-gradient(135deg, #555, #666666);
+  box-shadow: 0 6px 18px rgba(115, 114, 114, 0.458);
 }
 .open-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 25px rgba(74, 72, 72, 0.5);
 }
 
 
@@ -351,7 +352,7 @@ body.light-mode { --project-title-color: #333; -figma-btn-color: #fff; -demo-btn
   padding: 0.45rem 1rem; 
   border-radius: 8px; 
   border: none; 
-  background: #13AEFB; 
+  background: #0f7db3; 
   color: #fff; 
   cursor: pointer; 
   font-size: 0.8rem;
@@ -376,7 +377,7 @@ body.light-mode { --project-title-color: #333; -figma-btn-color: #fff; -demo-btn
   margin-bottom: 0.8rem; 
   text-align: center; 
   color: #221e1e; 
-  text-shadow: 0 0 5px rgba(19,174,251,0.5); 
+  text-shadow: 0 0 5px rgba(18, 76, 105, 0.5); 
   font-size: 1.3rem; 
 }
 
