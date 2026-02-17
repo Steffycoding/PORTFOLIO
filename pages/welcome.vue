@@ -2,34 +2,53 @@
   <div v-if="isMounted">
     <v-app>
       <v-main class="welcome-page">
-        <!-- Theme Toggle Component -->
+
+        <!-- Global reusable background component -->
+        <BackgroundCanvas />
+
         <ThemeToggle />
 
         <v-container class="welcome-container" fluid>
-          <h1 class="title" :style="titleStyle">
-            Welcome to My <br> 
-              Portfolio!
-          </h1>
+          <div class="title-wrapper">
+
+            <!-- "Hello, I'm" with gradient text + decorative lines -->
+            <div class="eyebrow-wrapper">
+              <span class="eyebrow-line" />
+              <p class="eyebrow">Hello, I'm</p>
+              <span class="eyebrow-line" />
+            </div>
+
+            <!-- Main name — colour + glow driven by computed titleStyle -->
+            <h1 class="title" :style="titleStyle">Stephanie Poole</h1>
+
+            <!-- Subtitle in warm orange to contrast the blue palette -->
+            <p class="subtitle">Aspiring Web Developer &amp; UX/UI Designer</p>
+          </div>
 
           <div class="button-group">
-            <v-btn :style="guestBtnStyle" @click="goGuest">Guest</v-btn>
-            <v-btn :style="adminBtnStyle" @click="showAdminPopup = true">Admin</v-btn>
+            <v-btn class="cta-btn guest-btn" :style="guestBtnStyle" @click="goGuest">
+              <span>Explore Portfolio</span><span class="btn-icon">→</span>
+            </v-btn>
+            <v-btn class="cta-btn admin-btn" :style="adminBtnStyle" @click="showAdminPopup = true">
+              <span>Admin</span><span class="btn-icon">⚙</span>
+            </v-btn>
           </div>
         </v-container>
 
-        <!-- Admin Popup -->
-        <div v-if="showAdminPopup" class="popup-overlay">
-          <div class="popup-card" :class="{ dark: theme.global.current.value.dark }">
-            <button class="close-btn" @click="showAdminPopup = false">×</button>
-            <h2>Admin Access</h2>
-            <input
-              type="password"
-              v-model="adminPassword"
-              placeholder="Enter password"
-            />
-            <v-btn class="submit-btn" @click="submitAdmin">Enter</v-btn>
+        <!-- Admin popup — clicking the backdrop closes it -->
+        <transition name="popup-fade">
+          <div v-if="showAdminPopup" class="popup-overlay" @click.self="showAdminPopup = false">
+            <div class="popup-card" :class="{ dark: theme.global.current.value.dark }">
+              <button class="close-btn" @click="showAdminPopup = false">×</button>
+              <div class="lock-icon">🔐</div>
+              <h2>Admin Access</h2>
+              <p class="popup-hint">Enter your credentials to continue</p>
+              <input type="password" v-model="adminPassword" placeholder="Password" @keyup.enter="submitAdmin" />
+              <v-btn class="submit-btn" @click="submitAdmin">Authenticate</v-btn>
+            </div>
           </div>
-        </div>
+        </transition>
+
       </v-main>
     </v-app>
   </div>
@@ -40,463 +59,198 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'
 import ThemeToggle from '~/components/ThemeToggle.vue'
+import BackgroundCanvas from '~/components/BackgroundCanvas.vue'
 
 const router = useRouter()
 const theme = useTheme()
-
 const isMounted = ref(false)
-onMounted(() => {
-  isMounted.value = true
-})
-
-function goGuest() {
-  router.push('/about')
-}
-
 const showAdminPopup = ref(false)
 const adminPassword = ref('')
 
-// Admin login
+onMounted(() => { isMounted.value = true })
+
+function goGuest() { router.push('/about') }
 function submitAdmin() {
   if (adminPassword.value === 'theloop') {
-    // Set admin session
-    localStorage.setItem('isAdmin', 'true')
-
-    // Redirect admin to the correct page
-    router.push('/AboutAdmin')
-    showAdminPopup.value = false
-  } else {
-    alert('Incorrect password!')
-    adminPassword.value = ''
-  }
+    localStorage.setItem('isAdmin', 'true'); router.push('/AboutAdmin'); showAdminPopup.value = false
+  } else { alert('Incorrect password!'); adminPassword.value = '' }
 }
 
-
-// Logout (to call from admin page)
-function logoutAdmin() {
-  localStorage.removeItem('isAdmin')
-  router.push('/') // back to welcome page
-}
+// Theme-reactive styles
+const isDark = computed(() => theme.global.current.value.dark)
 
 const titleStyle = computed(() => ({
-  color: theme.global.current.value.dark ? '#00BCD4' : '#0057FF',
-  textShadow: theme.global.current.value.dark
-    ? '0 0 8px rgba(0,188,212,0.6), 0 0 14px rgba(0,150,180,0.4)'
-    : '0 0 6px rgba(0,87,255,0.6), 0 0 12px rgba(0,65,200,0.4)',
+  color: isDark.value ? '#00E5FF' : '#0039d4',
+  textShadow: isDark.value
+    ? '0 0 28px rgba(0,229,255,0.55), 0 0 55px rgba(0,188,212,0.25)'
+    : '0 2px 18px rgba(0,57,212,0.22)',
 }))
-
-const buttonGradient = computed(() =>
-  theme.global.current.value.dark
-    ? 'linear-gradient(145deg, #00BCD4, #E78F0A)'
-    : 'linear-gradient(145deg, #0057FF, #E78F0A)'
-)
 
 const guestBtnStyle = computed(() => ({
-  backgroundImage: buttonGradient.value,
-  color: '#fff',
+  background: isDark.value ? 'linear-gradient(135deg,#00BCD4,#0039d4)' : 'linear-gradient(135deg,#0057FF,#00BCD4)',
+  boxShadow: isDark.value ? '0 8px 32px rgba(0,188,212,0.45)' : '0 8px 32px rgba(0,87,255,0.4)',
 }))
 const adminBtnStyle = computed(() => ({
-  backgroundImage: buttonGradient.value,
-  color: '#fff',
+  background: 'transparent',
+  border: isDark.value ? '2px solid rgba(0,229,255,0.5)' : '2px solid rgba(0,87,255,0.4)',
+  color: isDark.value ? '#00E5FF' : '#0039d4',
 }))
 </script>
 
-
-
-
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
 
-/* --- Page --- */
+/* Full-viewport centred shell */
 .welcome-page {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
+  position: relative; display: flex;
+  justify-content: center; align-items: center;
+  min-height: 100vh; min-height: 100dvh;
   background: var(--v-theme-background);
-  color: var(--v-theme-surface);
-  text-align: center;
-  padding-top: 5vh;
-  position: relative;
-  overflow: hidden; /* prevent scrolling */
+  overflow: hidden; font-family: 'DM Sans', sans-serif;
 }
 
 
-/* Container */
+/* Content column */
 .welcome-container {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(4rem, 8vh, 18rem);
-  align-items: center;
-  margin-top: clamp(5vh, 10vh, 12vh);
-  padding: 0 2vw;
-  max-width: 100%;
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: clamp(2rem, 6vh, 5rem);
+  padding: clamp(1rem,3vw,3rem) clamp(1.2rem,4vw,4rem);
+  width: 100%; max-width: 920px; margin: 0 auto;
 }
+
+/* Title block — slides up on page load */
+.title-wrapper {
+  display: flex; flex-direction: column; align-items: center;
+  gap: clamp(0.35rem, 1vh, 0.75rem);
+  animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+/* ── "Hello, I'm" row ── */
+.eyebrow-wrapper { display: flex; align-items: center; gap: clamp(0.5rem,1.5vw,1rem) }
+/* Fading lines either side of the eyebrow text */
+.eyebrow-line { flex:1; max-width:clamp(36px,8vw,100px); height:2px; opacity:0.3; background:linear-gradient(90deg,transparent,currentColor) }
+.eyebrow-line:last-child { background:linear-gradient(90deg,currentColor,transparent) }
+.eyebrow {
+  margin: 0; font-family: 'DM Sans', sans-serif;
+  font-size: clamp(1rem, 2.5vw, 1.9rem);
+  font-weight: 600; letter-spacing: clamp(0.12em, 0.5vw, 0.22em); text-transform: uppercase;
+  /* Cyan → blue gradient text */
+  background: linear-gradient(135deg, #00BCD4, #0057FF);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* ── Main name ── */
 .title {
-  font-size: clamp(2rem, 4.5vw, 4.5rem);
-  font-weight: 900;
-  line-height: 1.2;
-  overflow: hidden;
-  margin-bottom: 2rem;
+  margin: 0; font-family: 'Syne', sans-serif;
+  font-size: clamp(2.5rem, 8vw, 8.5rem); font-weight: 800;
+  line-height: 1.02; letter-spacing: -0.03em;
+  transition: color 0.4s, text-shadow 0.4s;
 }
 
-/* Button Group */
+/* ── Subtitle — warm orange accent ── */
+.subtitle {
+  margin: 0; font-weight: 400; letter-spacing: 0.03em;
+  font-size: clamp(0.9rem, 1.8vw, 1.25rem);
+  /* Orange that works in both light and dark */
+  color: #E8890C;
+  text-shadow: 0 0 18px rgba(232,137,12,0.25);
+}
+
+/* ── Buttons ── */
 .button-group {
-  display: flex;
-  justify-content: center;
-  gap: clamp(2rem, 4vw, 8rem);
-  flex-wrap: wrap;
-  width: 100%;
+  display: flex; align-items: center; justify-content: center;
+  gap: clamp(0.8rem,2vw,2rem); flex-wrap: wrap; width: 100%;
+  animation: fadeUp 0.9s 0.18s cubic-bezier(0.16,1,0.3,1) both; /* delayed after title */
 }
+.cta-btn {
+  display: flex !important; align-items: center !important; gap: 0.5rem;
+  height: auto !important; min-width: clamp(130px,30vw,210px);
+  padding: clamp(0.8rem,1.5vw,1.1rem) clamp(1.5rem,3vw,2.8rem) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: clamp(0.95rem,1.5vw,1.2rem) !important; font-weight: 500 !important;
+  border-radius: 100px !important; text-transform: none !important;
+  position: relative; overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+/* Shimmer sweep across button on hover */
+.cta-btn::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(120deg,rgba(255,255,255,0) 40%,rgba(255,255,255,0.22) 50%,rgba(255,255,255,0) 60%);
+  background-size:200% 100%; background-position:-100% 0;
+  transition:background-position 0.55s ease;
+}
+.cta-btn:hover::after { background-position:200% 0 }
+.cta-btn:hover { transform:translateY(-3px) scale(1.03) }
+.guest-btn { color:#fff !important }
+.btn-icon { transition:transform 0.25s }
+.cta-btn:hover .btn-icon { transform:translateX(4px) }
 
-/* Buttons */
-.v-btn {
-  flex: 1 1 auto;
-  min-width: 150px;
-  max-width: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: clamp(1.5rem, 2vw, 3rem) clamp(2.5rem, 4vw, 4.5rem);
-  font-size: clamp(1.2rem, 2vw, 1.7rem);
-  border-radius: 20px;
-  cursor: pointer;
-  text-transform: none;
-  overflow: hidden;
-  position: relative;
-  box-shadow: 0 7px 20px rgba(0,0,0,0.35);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin-top: 3rem;
-}
-.v-btn::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    120deg,
-    rgba(255,255,255,0.2) 0%,
-    rgba(255,255,255,0.5) 50%,
-    rgba(255,255,255,0.2) 100%
-  );
-  transform: rotate(25deg);
-  pointer-events: none;
-  animation: buttonShimmer 2s infinite;
-}
-.v-btn:hover { transform: scale(1.05); box-shadow: 0 10px 28px rgba(0,0,0,0.45); }
-
-/* --- Popup Overlay --- */
+/* ── Admin popup ── */
 .popup-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  backdrop-filter: blur(10px);
-  background-color: rgba(0,0,0,0.55);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
-  padding: 2vw;
-  overflow: hidden; /* prevent scrolling */
+  position:fixed; inset:0; z-index:2000; padding:1rem;
+  backdrop-filter:blur(14px) saturate(1.4); background:rgba(0,0,0,0.5);
+  display:flex; justify-content:center; align-items:center;
 }
-
-/* Popup Card */
 .popup-card {
-  background: #fff;
-  padding: clamp(2rem, 3vw, 3.5rem) clamp(2.5rem, 4vw, 4.5rem);
-  border-radius: clamp(1.5rem, 2vw, 2.5rem);
-  width: clamp(280px, 45%, 520px);
-  max-width: 95%;
-  text-align: center;
-  position: relative;
-  box-shadow: 0 25px 50px rgba(0,0,0,0.55);
-  pointer-events: auto;
+  background:rgba(255,255,255,0.97); text-align:center; position:relative;
+  padding:clamp(1.6rem,4vw,3rem) clamp(1.4rem,4vw,3.6rem);
+  border-radius:clamp(16px,3vw,26px); width:clamp(280px,90vw,450px);
+  box-shadow:0 30px 80px rgba(0,0,0,0.3),0 0 0 1px rgba(255,255,255,0.5);
+  animation:scaleIn 0.35s cubic-bezier(0.16,1,0.3,1); /* pops in when opened */
 }
-.popup-card.dark {
-  background: #181818;
-  color: #fff;
-}
-
-/* Close button top-right */
+.popup-card.dark { background:rgba(16,16,26,0.97); color:#e8f4ff; box-shadow:0 30px 80px rgba(0,0,0,0.7),0 0 0 1px rgba(0,229,255,0.12) }
+.lock-icon { font-size:clamp(1.7rem,4vw,2.4rem); margin-bottom:0.4rem }
+.popup-card h2 { font-family:'Syne',sans-serif; font-size:clamp(1.3rem,3vw,2rem); font-weight:700; margin:0 0 0.25rem }
+.popup-hint { font-size:clamp(0.78rem,1.5vw,0.9rem); opacity:0.5; margin:0 0 1.1rem }
 .close-btn {
-  position: absolute;
-  top: clamp(0.8rem, 1vw, 1.2rem);
-  right: clamp(0.8rem, 1vw, 1.2rem);
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: inherit;
+  position:absolute; top:clamp(0.6rem,1.5vw,1rem); right:clamp(0.7rem,1.5vw,1.2rem);
+  font-size:1.7rem; line-height:1; background:none; border:none; cursor:pointer;
+  color:inherit; opacity:0.4; transition:opacity 0.2s;
 }
-
-/* Popup Title */
-.popup-card h2 {
-  font-size: clamp(1.5rem, 2.5vw, 2.2rem);
-  margin-bottom: clamp(1rem, 2vh, 1.5rem);
-  text-shadow: 0 0 6px rgba(0,0,0,0.25);
-}
-
-/* Input */
+.close-btn:hover { opacity:0.9 }
 .popup-card input {
-  width: 100%;
-  padding: clamp(0.8rem, 1.5vw, 1.2rem) clamp(1rem, 2vw, 1.5rem);
-  margin: clamp(1rem, 2vh, 1.5rem) 0 clamp(1.5rem, 2vh, 2rem);
-  border-radius: 12px;
-  border: 2px solid transparent;
-  font-size: clamp(1rem, 1.5vw, 1.3rem);
-  outline: none;
-  background: linear-gradient(145deg, #f0f0f0, #e0e0e0);
-  box-shadow: inset 0 0 6px rgba(0,0,0,0.15), 0 0 10px rgba(0,0,0,0.1);
+  width:100%; border-radius:12px; border:2px solid transparent; outline:none;
+  padding:clamp(0.72rem,1.5vw,0.95rem) clamp(0.85rem,2vw,1.2rem);
+  font-family:'DM Sans',sans-serif; font-size:clamp(0.88rem,1.5vw,1rem);
+  background:rgba(0,0,0,0.06); color:inherit; margin-bottom:0.85rem;
+  transition:border-color 0.25s,box-shadow 0.25s;
 }
-.popup-card.dark input {
-  background: #262626;
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 0 6px rgba(0,0,0,0.3);
-  color: #fff;
-}
-.popup-card input:focus {
-  border-color: #00BCD4;
-  box-shadow: 0 0 18px #00BCD4, inset 0 0 8px rgba(0,188,212,0.25);
-}
-
-/* Submit Button */
+.popup-card.dark input { background:rgba(255,255,255,0.08) }
+.popup-card input:focus { border-color:#00BCD4; box-shadow:0 0 0 4px rgba(0,188,212,0.15) }
 .submit-btn {
-  width: 100%;
-  padding: clamp(1.2rem, 2vw, 1.8rem);
-  font-size: clamp(1.2rem, 1.5vw, 1.6rem);
-  border-radius: 15px;
-  background: linear-gradient(145deg, #00BCD4, #E78F0A);
-  color: #fff;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 8px 22px rgba(0,0,0,0.5);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width:100% !important; border-radius:12px !important; color:#fff !important;
+  padding:clamp(0.82rem,1.5vw,1rem) !important; text-transform:none !important;
+  font-family:'DM Sans',sans-serif !important; font-size:clamp(0.92rem,1.5vw,1.05rem) !important;
+  font-weight:500 !important; background:linear-gradient(135deg,#0057FF,#00BCD4) !important;
+  box-shadow:0 6px 24px rgba(0,87,255,0.4) !important; transition:transform 0.2s,box-shadow 0.2s !important;
 }
-.submit-btn::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    120deg,
-    rgba(255,255,255,0.2) 0%,
-    rgba(255,255,255,0.5) 50%,
-    rgba(255,255,255,0.2) 100%
-  );
-  transform: rotate(25deg);
-  pointer-events: none;
-  animation: buttonShimmer 2s infinite;
+.submit-btn:hover { transform:translateY(-2px) !important; box-shadow:0 10px 32px rgba(0,87,255,0.55) !important }
+
+/* ── Keyframes ── */
+@keyframes fadeUp {
+  /* Elements slide up and fade in on load */
+  from { opacity:0; transform:translateY(28px) } to { opacity:1; transform:translateY(0) }
 }
-.submit-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.6);
+@keyframes scaleIn {
+  /* Popup grows from 88% on open */
+  from { opacity:0; transform:scale(0.88) } to { opacity:1; transform:scale(1) }
 }
 
-/* Theme toggle */
-.theme-toggle {
-  position: fixed;
-  top: 1.5vh;
-  left: 1.5vw;
-  width: clamp(35px, 5.5vw, 60px);
-  z-index: 1100;
-  cursor: pointer;
+.popup-fade-enter-active, .popup-fade-leave-active { transition:opacity 0.3s ease }
+.popup-fade-enter-from,  .popup-fade-leave-to      { opacity:0 }
+
+/* ── Responsive ── */
+@media (max-width:540px) {
+  .button-group { flex-direction:column; align-items:stretch }
+  .cta-btn { width:100% !important; justify-content:center !important; min-width:unset; border-radius:14px !important }
 }
-.theme-toggle img {
-  width: 100%;
+@media (max-width:375px) {
+  .welcome-container { gap:1.5rem }
+  .title { font-size:2.3rem }
+  .eyebrow { font-size:0.92rem }
+  .subtitle { font-size:0.85rem }
 }
-.theme-toggle:hover {
-  transform: scale(1.1);
-  transition: transform 0.2s ease;
-}
-
-/* --- Fully Responsive Layout --- */
-
-/* --- Large desktop / TV screens --- */
-@media (min-width: 1600px) {
-  .popup-card {
-    width: 45%;             /* card width */
-    max-width: 800px;       /* prevent over-stretching */
-    padding: 2.5rem 2.5rem;   /* tight enough padding */
-    display: flex;
-    flex-direction: column;
-    align-items: center;    /* center all children */
-  }
-
-  .popup-card h2 {
-    margin-bottom: 1rem;
-    font-size: 2.2rem;
-    text-align: center;
-  }
-
-  .popup-card input {
-    width: 100%;
-    max-width: 400px;       /* nice input length */
-    padding: 1.2rem 1.5rem;
-    margin-bottom: 1rem;    /* spacing to button */
-    font-size: 1.25rem;
-    box-sizing: border-box;
-  }
-
-  .submit-btn {
-    width: 100%;
-    max-width: 400px;       /* match input width */
-    padding: 1.5rem 0;      /* taller button for comfort */
-    font-size: 1.5rem;
-    margin: 0;               /* remove weird spacing */
-    display: flex;
-    justify-content: center; /* center text horizontally */
-    align-items: center;     /* center text vertically */
-    border-radius: 18px;     /* slightly rounder */
-  }
-}
-
-
-/* --- Mid-range screens: 768px to 1280px --- */
-@media (min-width: 768px) and (max-width: 1280px) {
-  /* Buttons */
-  .v-btn {
-    width: 85%;          /* slightly wider */
-    max-width: 320px;    /* allow for readable buttons */
-    padding: 2rem 2.5rem;
-    font-size: 1.55rem;  /* bigger font */
-  }
-
-  /* Title */
-  .title {
-    font-size: 3.5rem;   /* easier to read */
-    line-height: 1.2;
-    margin-bottom: 1.5rem;
-  }
-
-  /* Popup card */
-  .popup-card {
-    width: 50%;          /* wider for mid screens */
-    max-width: 600px;
-    padding: 2.5rem 2.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  /* Popup title */
-  .popup-card h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    text-align: center;
-  }
-
-  /* Input */
-  .popup-card input {
-    width: 100%;
-    max-width: 400px;    /* match button width */
-    padding: 1.2rem 1.5rem;
-    font-size: 1.35rem;
-    margin-bottom: 1rem; /* reduced gap to submit button */
-    box-sizing: border-box;
-  }
-
-  /* Submit button */
-  .submit-btn {
-    width: 100%;
-    max-width: auto;    /* same as input */
-    padding: 1.5rem 0;
-    font-size: 1.5rem;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 18px;
-  }
-}
-
-/* --- Small mobile screens: 344px to 390px --- */
-@media (max-width: 390px) {
-  .popup-card input,
-  .submit-btn {
-    width: 95%;           /* keep inside popup */
-    max-width: 100%;      /* prevent overflow */
-  }
-
-  .submit-btn {
-    font-size: 1.25rem;   /* slightly smaller font for fit */
-    padding: 1rem 0;      /* adjust padding */
-    margin-top: 0.4rem;   /* reduce gap to input */
-  }
-}
-
-/* --- Mid-small screens: around 540px --- */
-@media (min-width: 500px) and (max-width: 580px) {
-  .popup-card input {
-    margin-bottom: 0.5rem; /* tighten gap to submit button */
-  }
-
-  .submit-btn {
-    margin-top: 0.3rem;    /* small space above button */
-  }
-}
-
-
-/* Mobile phones */
-@media (max-width: 480px) {
-  .welcome-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;   /* keep buttons centered horizontally */
-    gap: 0;                 /* remove extra spacing between children */
-    margin-top: 4vh;        /* move container down slightly to give title breathing room */
-  }
-
-  .title {
-    font-size: 2.3rem;
-    line-height: 1.2;
-    margin-top: 1.5rem;   /* small margin-bottom to bring buttons closer */
-  }
-
-  .button-group {
-    justify-content: center;
-    align-items: center;
-    gap: 0.4rem;            /* tighter spacing between buttons */
-    margin-top: -3rem;
-  }
-
-  .v-btn {
-    width: 100vw;
-    max-width: auto;
-    padding: 1.5rem 2rem;
-    font-size: 1.35rem;
-    margin-top: 8rem;
-  }
-
-  .theme-toggle {
-    width: 50px;
-    height: 50px;
-  }
-
-  .popup-card {
-    width: 90%;
-    padding: 1.8rem 1.6rem;
-  }
-
-  .popup-card h2 {
-    font-size: 1.6rem;
-    margin-bottom: 0.8rem;
-  }
-
-  .popup-card input {
-    font-size: 1.2rem;
-    padding: 0.9rem 1rem;
-    margin-bottom: 0.6rem;
-  }
-
-  .submit-btn {
-    font-size: 1.3rem;
-    padding: 1rem 0;
-    margin-top: 0.3rem;
-  }
-}
-
+@media (min-width:768px) and (max-width:1024px) { .welcome-container { gap:3.5rem } }
+@media (min-width:1440px) { .title { font-size:9rem } .welcome-container { gap:5rem } }
 </style>

@@ -1,17 +1,19 @@
 <template>
   <v-app>
     <v-main class="about-page">
-      <!-- Theme Toggle Component -->
-      <ThemeToggle class="theme-toggle" />
+      <!-- Background canvas — z-index: 0, never affects elements above it -->
+      <BackgroundCanvas />
+
+      <!-- Toggle wrapped in isolate div so no parent filter bleeds into it -->
+      <div class="toggle-wrapper">
+        <ThemeToggle />
+      </div>
 
       <v-container class="about-container" fluid>
-        <!-- Sidebar component -->
         <Sidebar />
 
-        <!-- Main Content -->
         <div class="main-content">
           <h1 class="title">About Me</h1>
-          <!-- About text from composable -->
           <div class="intro-text" v-html="aboutText"></div>
         </div>
       </v-container>
@@ -22,9 +24,9 @@
 <script setup lang="ts">
 import Sidebar from '~/components/Sidebar.vue'
 import ThemeToggle from '~/components/ThemeToggle.vue'
+import BackgroundCanvas from '~/components/BackgroundCanvas.vue'
 import { useAbout } from '../composables/useAbout'
 
-// Use composable for reactive about text
 const { aboutText } = useAbout()
 </script>
 
@@ -37,21 +39,15 @@ const { aboutText } = useAbout()
   font-family: 'Inter', 'Roboto', sans-serif;
 }
 
-/* Theme toggle */
-.theme-toggle {
+/* isolation: isolate creates a new stacking context so no
+   filter/blur from the canvas or orbs bleeds into the toggle */
+.toggle-wrapper {
   position: fixed;
   top: 1.5vh;
   left: 1.5vw;
-  width: clamp(35px, 5.5vw, 60px);
   z-index: 1100;
-  cursor: pointer;
-}
-.theme-toggle img {
-  width: 100%;
-}
-.theme-toggle:hover {
-  transform: scale(1.1);
-  transition: transform 0.2s ease;
+  isolation: isolate;
+  width: clamp(35px, 5.5vw, 60px);
 }
 
 /* Layout container */
@@ -62,6 +58,8 @@ const { aboutText } = useAbout()
   max-width: 1400px;
   margin: 0 auto;
   flex: 1;
+  position: relative;
+  z-index: 1; /* sits above canvas (z-index: 0) */
 }
 
 /* Main content */
@@ -74,9 +72,9 @@ const { aboutText } = useAbout()
 
 /* Title */
 .title {
-  font-size: clamp(2rem, 5vw, 4rem);
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
   font-weight: 900;
-  margin-bottom: 1rem;
+  margin-bottom: auto;
   font-family: 'Poppins', 'Inter', sans-serif;
   background: linear-gradient(90deg, #E78F0A, #13AEFB, #E78F0A);
   background-size: 300% 300%;
@@ -86,8 +84,8 @@ const { aboutText } = useAbout()
 }
 
 @keyframes gradientAnimation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
@@ -99,13 +97,12 @@ const { aboutText } = useAbout()
   color: var(--v-theme-surface);
 }
 
-
 .highlight {
   color: #E78F0A !important;
   font-weight: 600;
 }
 
-/* Fully Responsive Layout */
+/* Responsive */
 @media (max-width: 768px) {
   .about-container { flex-direction: column; }
   .main-content { margin-left: 0; padding: 1.5rem; padding-bottom: 90px; }
@@ -130,11 +127,6 @@ const { aboutText } = useAbout()
   .title { font-size: clamp(2.4rem, 7vw, 3.2rem); margin-top: 2rem; margin-bottom: 1.8rem; }
   .intro-text { font-size: clamp(1.1rem, 1.5vw, 1.4rem); line-height: 1.8; margin-top: 1.2rem; }
   .main-content { padding-top: 3rem; }
-}
-
-@media (width: 1024px) {
-  .title { font-size: 2.8rem; }
-  .intro-text { font-size: 1.2rem; line-height: 1.7; }
 }
 
 @media (max-width: 400px) {
