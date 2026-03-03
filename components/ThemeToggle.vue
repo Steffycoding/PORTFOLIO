@@ -52,9 +52,9 @@ function toggleTheme() {
 <style>
 .theme-toggle {
   position: fixed;
-  top: 1.2vh;
+  top: 2.2vh;
   left: 1.2vw;
-  width: clamp(30px, 5vw, 60px); 
+  width: clamp(22px, 3vw, 40px); 
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -68,16 +68,26 @@ function toggleTheme() {
   display: block;
 }
 
+/* 🟠 Orange tint in light mode */
+body.light-mode .theme-toggle img {
+  filter: invert(55%) sepia(90%) saturate(600%) hue-rotate(360deg) brightness(105%);
+}
+
+/* 🩵 Teal tint in dark mode */
+body.dark-mode .theme-toggle img {
+  filter: invert(65%) sepia(40%) saturate(500%) hue-rotate(140deg) brightness(95%);
+}
+
 .theme-toggle:hover {
   transform: scale(1.12);
   filter: drop-shadow(0 0 8px #40748f);
   transition: transform 0.2s ease, filter 0.2s ease;
 }
 
-/* Responsiveness*/
+/* Responsiveness */
 @media (max-width: 480px) {
   .theme-toggle {
-    width: clamp(35px, 10vw, 55px);
+    width: clamp(20px, 7vw, 35px); /* ⬅ also reduced */
   }
 }
 </style>

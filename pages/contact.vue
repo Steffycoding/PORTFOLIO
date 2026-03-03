@@ -66,9 +66,12 @@ const profilePic = ref('/images/me.jpg')
 <style scoped>
 /* ── ThemeToggle — isolated, never blurred ── */
 .toggle-wrapper {
-  position: relative;
-  z-index: 500;
+  position: fixed;
+  top: 1.5vh;
+  left: 1.5vw;
+  z-index: 1100;
   isolation: isolate;
+  width: clamp(35px, 5.5vw, 60px);
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
@@ -83,7 +86,7 @@ const profilePic = ref('/images/me.jpg')
   box-sizing: border-box;
   overflow-y: auto;
   overflow-x: hidden;
-  transform: translateX(-1rem); /* slight left nudge on desktop */
+  /* removed transform: translateX(-1rem) — was pulling card left on all screens */
 }
 
 /* ══════════════════════════════════════════
@@ -354,26 +357,26 @@ body.light-mode .contact-btn:hover { background: rgba(0,0,0,0.06); }
    RESPONSIVE
 ══════════════════════════════════════════ */
 
-/* Large desktop */
+/* Large desktop — FIXED: removed excess padding-left and translateX */
 @media (min-width: 1400px) {
-  .main-content { padding-left: 5rem; transform: translateX(-1rem); }
+  .main-content { padding-left: 2rem; transform: translateX(0); }
   .contact-card { max-width: 500px; padding: 3rem 3rem 2.8rem; }
   .profile-pic  { width: 160px; height: 160px; }
   .avatar-ring  { width: 170px; height: 170px; }
   .name         { font-size: 2.1rem; }
 }
 
-/* MacBook / laptop */
+/* MacBook / laptop — FIXED: removed excess padding-left and translateX */
 @media (max-width: 1399px) and (min-width: 1201px) {
-  .main-content { padding-left: 5rem; transform: translateX(-1rem); }
+  .main-content { padding-left: 2rem; transform: translateX(0); }
 }
 
-/* Tablet landscape */
+/* Tablet landscape — FIXED: removed translateX offset */
 @media (max-width: 1200px) and (min-width: 769px) {
-  .main-content { padding-left: 2rem; transform: translateX(-0.5rem); }
+  .main-content { padding-left: 1rem; transform: translateX(0); }
 }
 
-/* Tablet portrait / large phone landscape */
+/* Tablet portrait / large phone landscape — untouched */
 @media (max-width: 768px) {
   .main-content {
     padding: 2.5rem 1rem 1.5rem;
@@ -398,7 +401,7 @@ body.light-mode .contact-btn:hover { background: rgba(0,0,0,0.06); }
   .contact-btn  { padding: 0.75rem 1.1rem; font-size: 0.88rem; }
 }
 
-/* Standard phones (iPhone 12/13/14, Galaxy S) */
+/* Standard phones (iPhone 12/13/14, Galaxy S) — untouched */
 @media (max-width: 480px) {
   .main-content {
     padding: 3.5rem 0.75rem 1rem;
@@ -426,7 +429,7 @@ body.light-mode .contact-btn:hover { background: rgba(0,0,0,0.06); }
   .btn-icon     { font-size: 1rem; width: 22px; }
 }
 
-/* Small phones — iPhone SE, Galaxy A03 */
+/* Small phones — iPhone SE, Galaxy A03 — untouched */
 @media (max-width: 375px) {
   .main-content {
     padding-top: 3rem;
@@ -442,7 +445,7 @@ body.light-mode .contact-btn:hover { background: rgba(0,0,0,0.06); }
   .contact-btn  { padding: 0.6rem 0.85rem; font-size: 0.78rem; }
 }
 
-/* iPhone 12/13/14 Pro — 390×844 */
+/* iPhone 12/13/14 Pro — 390×844 — untouched */
 @media (device-width: 390px) and (device-height: 844px) {
   .main-content { padding-top: 3.5rem; transform: translateX(0); }
   .contact-card { max-width: 340px; padding: 1.5rem 1.1rem; }
@@ -450,7 +453,7 @@ body.light-mode .contact-btn:hover { background: rgba(0,0,0,0.06); }
   .avatar-ring  { width: 110px; height: 110px; }
 }
 
-/* iPhone 14 Plus / Pro Max — 428×926 */
+/* iPhone 14 Plus / Pro Max — 428×926 — untouched */
 @media (device-width: 428px) and (device-height: 926px) {
   .main-content { padding-top: 3.5rem; transform: translateX(0); }
   .contact-card { max-width: 360px; padding: 1.6rem 1.2rem; }
@@ -458,7 +461,7 @@ body.light-mode .contact-btn:hover { background: rgba(0,0,0,0.06); }
   .avatar-ring  { width: 118px; height: 118px; }
 }
 
-/* iPad portrait */
+/* iPad portrait — untouched */
 @media (device-width: 768px) and (device-height: 1024px),
        (device-width: 834px) and (device-height: 1112px),
        (device-width: 820px) and (device-height: 1180px) {
@@ -466,7 +469,7 @@ body.light-mode .contact-btn:hover { background: rgba(0,0,0,0.06); }
   .contact-card { max-width: 440px; }
 }
 
-/* Surface Pro landscape */
+/* Surface Pro landscape — untouched */
 @media (width: 1024px) and (height: 600px) {
   .main-content { padding-left: 2rem; align-items: center; transform: translateX(-1.5rem); }
   .contact-card { max-width: 400px; padding: 1.8rem 1.6rem; }

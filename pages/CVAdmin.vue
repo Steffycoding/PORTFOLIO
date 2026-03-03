@@ -27,8 +27,8 @@
         <label>Experience:</label>
         <div v-for="(job, idx) in cvCopy.experience" :key="idx" class="section-block">
           <div class="section-header">
-            <span>Job {{ idx + 1 }}</span>
-            <button class="delete-btn" @click="removeExperience(idx)">Delete</button>
+            <span>Job {{ (idx as number) + 1 }}</span>
+            <button class="delete-btn" @click="removeExperience(idx as number)">Delete</button>
           </div>
           <input v-model="job.title" placeholder="Job Title" />
           <input v-model="job.date" placeholder="Date" />
@@ -40,8 +40,8 @@
         <label>Education:</label>
         <div v-for="(edu, idx) in cvCopy.education" :key="idx" class="section-block">
           <div class="section-header">
-            <span>Education {{ idx + 1 }}</span>
-            <button class="delete-btn" @click="removeEducation(idx)">Delete</button>
+            <span>Education {{ (idx as number) + 1 }}</span>
+            <button class="delete-btn" @click="removeEducation(idx as number)">Delete</button>
           </div>
           <input v-model="edu.school" placeholder="School" />
           <input v-model="edu.degree" placeholder="Degree" />
@@ -126,10 +126,16 @@ const removeEducation = (i: number) => cvCopy.value.education.splice(i, 1)
 /* Theme Toggle wrapper */
 .theme-toggle-wrapper {
   position: fixed;
-  top: 1.5rem;
-  left: 1.5rem;
-  z-index: 1200;
+  top: 1.5vh;
+  left: 1.5vw;
+  z-index: 1100;
+  isolation: isolate;
+  width: clamp(35px, 5.5vw, 60px);
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
+
+
 
 /* Editor container */
 .cv-editor {

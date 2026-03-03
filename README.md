@@ -1,7 +1,5 @@
 # Nuxt Minimal Starter
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
-
 ## Setup
 
 Make sure to install dependencies:
@@ -22,4 +20,10 @@ npm run dev
 
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+This is my portfolio containing all my neccessary informtion and details.
+
+I am usig nuxt, Vuetify and TypeScript.
+
+I wanted it to have a creative and lifelike flow.
+
+I am using SVG icons as well as some small animation to make it lively.

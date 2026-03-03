@@ -1,7 +1,7 @@
 <template>
   <div v-if="mounted" class="admin-page">
     <!-- Sidebar -->
-    <SidebarAdmin />
+    <Sidebar />
 
     <!-- Theme Toggle -->
     <ThemeToggle class="theme-toggle" />
@@ -63,6 +63,19 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
+/* Theme toggle */
+.theme-toggle {
+  position: fixed;
+  top: 1.5vh;
+  left: 1vw;
+  z-index: 1100;
+  isolation: isolate;
+  width: clamp(35px, 5.5vw, 45px);
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
 /* Match About Page Theme System */
 .admin-page {
   display: flex;
@@ -82,26 +95,6 @@ onMounted(() => {
   align-items: flex-start;
   padding: 5rem 2rem;
   position: relative;
-}
-
-/* Theme toggle */
-.theme-toggle {
-  position: fixed;
-  top: 1.5vh;
-  left: 1.5vw;
-  width: clamp(40px, 6vw, 70px);
-  z-index: 1100;
-  cursor: pointer;
-}
-
-.theme-toggle img {
-  width: 100%;
-}
-
-.theme-toggle:hover {
-  transform: scale(1.12);
-  transition: transform 0.2s ease;
-  filter: drop-shadow(0 0 8px #13AEFB);
 }
 
 /* Popup card */

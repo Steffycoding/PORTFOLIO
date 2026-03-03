@@ -8,4 +8,7 @@ export default defineNuxtConfig({
   build: {
     transpile: ['vuetify'],
   },
+  runtimeConfig: {
+    groqApiKey: '',
+  },
 })
