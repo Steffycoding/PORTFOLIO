@@ -585,7 +585,7 @@ const send = async () => {
       },
     }) as any
 
-    const raw     = data.content?.[0]?.text ?? ''
+    const raw = data?.content?.[0]?.text ?? data?.choices?.[0]?.message?.content ?? ''
     loading.value = false
 
     if (!handleAction(raw)) {
@@ -596,12 +596,12 @@ const send = async () => {
 
     if (!isAdmin.value) persistVisitorHistory(text)
 
-  } catch (err: any) {
-    loading.value = false
-    const status  = err?.statusCode ?? err?.status ?? 0
-    console.error('[SneakyAI]', status, err)
-    messages.value.push({ role: 'assistant', content: `Error (${status || 'network'}). Try again.` })
-  }
+    } catch (err: any) {
+        loading.value = false
+        console.error('[SneakyAI]', err)
+        messages.value.push({ role: 'assistant', content: `Hmm, something went quiet on my end. Give it a moment and try again.` })
+        if (!isAdmin.value) persistVisitorHistory(text)
+    }
 
   await scrollToBottom()
 }
