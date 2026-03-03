@@ -3,7 +3,9 @@
     <div class="layout">
       <Sidebar />
       <v-main>
-        <ThemeToggle />
+
+        <ThemeToggle class="theme-toggle" />
+
         <v-container class="playground-page" fluid>
           <h1 class="page-title">My Projects</h1>
 
@@ -144,6 +146,7 @@ const fetchGitHubProjects = async (username: string) => {
 
 <style scoped>
 
+
 /* Page Title */
 .page-title {
   text-align: center;
@@ -161,6 +164,16 @@ const fetchGitHubProjects = async (username: string) => {
   text-shadow: none;
 }
 
+.theme-toggle {
+  position: fixed;
+  top: 1.5vh;
+  left: 1vw;
+  z-index: 1100;
+  isolation: isolate;
+  width: clamp(35px, 5.5vw, 45px);
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
 /* Light mode: solid dark blue */
 body.light-mode .page-title {
   color: #137CB5;  /* crisp dark blue */

@@ -153,7 +153,7 @@ const adminBtnStyle = computed(() => ({
   margin: 0; font-weight: 400; letter-spacing: 0.03em;
   font-size: clamp(0.9rem, 1.8vw, 1.25rem);
   /* Orange that works in both light and dark */
-  color: #E8890C;
+  color: #c25a00;
   text-shadow: 0 0 18px rgba(232,137,12,0.25);
 }
 

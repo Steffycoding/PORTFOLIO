@@ -160,9 +160,12 @@ const fetchGitHubProjects = async (username: string) => {
 
 /* ThemeToggle — isolated stacking context, never blurred */
 .toggle-wrapper {
-  position: relative;
-  z-index: 500;
+  position: fixed;
+  top: 1.5vh;
+  left: 1.5vw;
+  z-index: 1100;
   isolation: isolate;
+  width: clamp(35px, 5.5vw, 60px);
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }

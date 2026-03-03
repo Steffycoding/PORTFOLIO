@@ -178,17 +178,12 @@ const deleteAbout = () => {
 .theme-toggle {
   position: fixed;
   top: 1.5vh;
-  left: 1.5vw;
-  width: clamp(40px, 6vw, 70px);
+  left: 1vw;
   z-index: 1100;
-  cursor: pointer;
-}
-.theme-toggle img {
-  width: 100%;
-}
-.theme-toggle:hover {
-  transform: scale(1.12);
-  transition: transform 0.2s ease;
+  isolation: isolate;
+  width: clamp(35px, 5.5vw, 45px);
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 /* Layout container */
