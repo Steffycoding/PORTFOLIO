@@ -274,7 +274,7 @@ const visitorIsSteph     = ref(false)
 const awaitingPassphrase = ref(false)
 
 const wrongPassphraseResponse = (name?: string): string => {
-  const n = name ? `, ${name}` : ''
+  const n: string = name ? `, ${name}` : ''
   const opts: string[] = [
     `Nice try${n} 😄 Very bold of you, I'll give you that. Now, how can I actually help you today?`,
     `Haha${n}! A for effort, truly. That's not it though — shall we get back to business?`,
@@ -283,7 +283,7 @@ const wrongPassphraseResponse = (name?: string): string => {
     `lol${n} — nice attempt! That passphrase wasn't quite right. Let's continue, shall we?`,
     `I admire the confidence${n}, but nope! 😏 What can I help you with today?`,
   ]
-  return opts[Math.floor(Math.random() * opts.length)]!
+  return opts[Math.floor(Math.random() * opts.length)] as string
 }
 
 const isClaimingToBeSteph = (text: string): boolean => {
@@ -495,9 +495,9 @@ const handleAction = (raw: string): boolean => {
     remove_experience: () => { const n = getExperience().split('\n\n').filter(p => !p.toLowerCase().includes(json.content.toLowerCase())).join('\n\n').trim(); setExperience(n); experienceText.value = n; messages.value.push({ role: 'assistant', content: '🗑 Removed from Experience.' }) },
   }
 
-  const handler = knowledgeActions[json.action]
-  if (handler) {
-    handler()
+  const action = knowledgeActions[json.action]
+  if (action) {
+    action()
     setAdminChat(messages.value)
     return true
   }
@@ -562,9 +562,10 @@ const send = async () => {
   loading.value = true
   await scrollToBottom()
 
-  const apiHistory   = messages.value.map(m => ({ role: m.role as 'user' | 'assistant', content: m.content }))
-  const firstUser    = apiHistory.findIndex(m => m.role === 'user')
-  const cleanHistory = firstUser >= 0 ? apiHistory.slice(firstUser) : apiHistory
+  // Send only last 10 messages to stay within Groq token limits
+  const cleanHistory = messages.value
+    .map(m => ({ role: m.role as 'user' | 'assistant', content: m.content }))
+    .slice(-20)
 
   try {
     const data = await $fetch('/api/chat', {
@@ -590,7 +591,7 @@ const send = async () => {
     const detail = err?.data?.error?.message ?? err?.data?.message ?? err?.message ?? ''
     console.error('[SneakyAI] status:', status, '| detail:', detail, '| raw:', err)
     const msg = status === 400 ? `Request rejected (400) — likely a body encoding issue on the server. Check /api/chat logs. Detail: ${detail}`
-              : status === 429 ? `Rate limited — too many requests. Try again in a moment.`
+              : status === 429 ? `I'm being asked too many things at once — give me 5 seconds and try again. 😅`
               : status === 500 ? `Server error (500) — check your /api/chat route.`
               : `Hmm, something went quiet on my end. Give it a moment and try again.`
     messages.value.push({ role: 'assistant', content: msg })
