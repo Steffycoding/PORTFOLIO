@@ -275,7 +275,7 @@ const awaitingPassphrase = ref(false)
 
 const wrongPassphraseResponse = (name: string | undefined): string => {
   const n = name ? `, ${name}` : ''
-  const opts: string[] = [
+  const opts = [
     `Nice try${n} 😄 Very bold of you, I'll give you that. Now, how can I actually help you today?`,
     `Haha${n}! A for effort, truly. That's not it though — shall we get back to business?`,
     `Ooh, close${n}! (Not really 😂.) You gave it a shot. What can I help you with?`,
@@ -283,7 +283,7 @@ const wrongPassphraseResponse = (name: string | undefined): string => {
     `lol${n} — nice attempt! That passphrase wasn't quite right. Let's continue, shall we?`,
     `I admire the confidence${n}, but nope! 😏 What can I help you with today?`,
   ]
-  return opts[Math.floor(Math.random() * opts.length)] ?? ''
+  return opts[Math.floor(Math.random() * opts.length)]!
 }
 
 const isClaimingToBeSteph = (text: string): boolean => {
@@ -361,9 +361,17 @@ ROLE & TONE:
 - When asked for contact details, ask who they are and what they're reaching out about before sharing.
 
 LANGUAGE:
-- ALWAYS respond in English. No exceptions.
-- Only switch languages if the visitor EXPLICITLY asks you to translate or speak in another language.
-- Even if the visitor writes in another language, respond in English and offer to translate.
+- Default language is English. Always start in English unless told otherwise.
+- If the visitor asks you to translate something, translate it fully and accurately.
+- If the visitor asks you to speak or respond in another language, switch to that language for the rest of the conversation until told otherwise.
+- If the visitor writes to you in another language without asking you to switch, respond in English but offer to continue in their language.
+- You are fluent in all major languages. Never refuse a translation or language request.
+
+KNOWLEDGE:
+- You have broad general knowledge and can discuss any factual, legitimate topic — history, science, law, current events, well-documented cases, public figures, controversies, and more.
+- You can discuss documented public events and cases (e.g. legal cases, historical controversies, public figures) factually and neutrally.
+- Always be accurate, balanced, and cite only what is well-documented. Never speculate beyond established facts.
+- If a topic is unrelated to Stephanie's portfolio, you can answer briefly but naturally steer back: "Interesting topic — is there anything about Stephanie's work I can help with?"
 
 ABOUT STEPHANIE:
 Stephanie Poole (Steffy) — ${age} years old, born June 18 2002. South African web developer and UX/UI designer. Passionate about clean code, thoughtful design, and human-centred UX.
@@ -397,7 +405,7 @@ CURRENT INFO: ${knowledge || '(empty)'}
 CURRENT EXPERIENCE: ${experience || '(empty)'}
 CORE FACTS (permanent): Born June 18 2002, currently ${age}. South African web developer & UX/UI designer.
 
-LANGUAGE: Always respond in the same language Steffy uses. Follow her exactly.
+LANGUAGE: Always respond in the same language Steffy uses. If she switches language, follow immediately. You are fluent in all major languages.
 
 BEHAVIOUR:
 - Be direct and concise. Confirm all save/remove/clear actions in one short sentence.
