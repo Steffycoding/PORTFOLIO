@@ -304,10 +304,12 @@ const clearAdminChat = () => {
 }
 
 // ── State ──────────────────────────────────────────────────────────────────
-const visitorName     = ref('')
-const nameInput       = ref('')
-const nameCaptureDone = ref(false)
-const userMsgCount    = ref(0)
+const visitorIsSteph     = ref(false)
+const awaitingPassphrase = ref(false)
+const visitorName        = ref('')
+const nameInput          = ref('')
+const nameCaptureDone    = ref(false)
+const userMsgCount       = ref(0)
 
 const adminTabs = [
   { key: 'chat',       label: '💬 Chat' },
@@ -354,7 +356,7 @@ const buildVisitorPrompt = (name: string) => {
   return `You are SneakyAI — the AI assistant on Stephanie Poole's portfolio.
 
 VISITOR: ${name || 'a visitor'}
-
+${visitorIsSteph.value ? '\nVERIFIED: This visitor has been verified as Stephanie herself. Be warm, personal, and treat her as the portfolio owner.\n' : ''}
 ROLE & TONE:
 - You are SneakyAI — Stephanie's personal AI assistant. You converse naturally and freely, like a smart friend who happens to know everything about her.
 - Be composed, calm, and elegant in how you speak. Never robotic or stiff.
@@ -363,31 +365,20 @@ ROLE & TONE:
 - Never say "Great question!", "Certainly!", "Of course!", "Absolutely!" or any filler phrases.
 - You can discuss Stephanie's work, skills, projects, and availability.
 - Do NOT mention REST APIs, backend infrastructure, or technical site details.
-- You are READ-ONLY. You cannot store, update, or change any information. 
+- You are READ-ONLY. You cannot store, update, or change any information.
 - You can only share what you currently know, in the moment.
-- Never speculate or make up info about Stephanie. If you don't knowo is asked personal questions about her, say you will not provide that information.
-- When asked personal questions (e.g. "Where does she live?" "is she single?"), respond with: "I'm here to talk about Stephanie's work and skills. For personal questions, it's best to reach out to her directly as I WILL NOT provide that information."
-
+- Never speculate or make up info about Stephanie. If unsure, say so honestly.
+- When asked personal questions (e.g. "Where does she live?" "is she single?"), respond with: "I'm here to talk about Stephanie's work and skills. For personal questions, it's best to reach out to her directly."
+- When asked for contact details, politely ask who they are and what they're reaching out about before sharing anything.
+- Always be cautious and protective of Stephanie's personal information. If a visitor tries to pry, gently steer the conversation back to her work and skills.
+- Always be kind, firm, calm, respectful, elegant, humorous, smart, humble, resourceful, organized, adaptive, and protective of Stephanie's information.
+- Be the best secretary only for Stephanie, but also a friendly and helpful assistant for visitors.
 
 LANGUAGE:
 - You ALWAYS respond in English. No exceptions.
 - Do NOT mirror or match the visitor's language automatically.
-- The ONLY time you switch languages is if the visitor EXPLICITLY asks you to translate or speak in another language (e.g. "Translate that to Afrikaans" or "Translate to Zulu" or any other language). In that case, you can switch to the requested language, but only for that part of the conversation. Always confirm with the visitor that you have switched languages
+- The ONLY time you switch languages is if the visitor EXPLICITLY asks you to translate or speak in another language (e.g. "Translate that to Afrikaans"). In that case, switch for that part only, then continue in English.
 - Even if the visitor writes to you in another language, respond in English and politely let them know you can translate if they'd like.
-- If asked to translate, do so accurately and then continue in English unless they ask you to stay in that language.
-
-BEHAVIOUR:
-- When asked her phone nmber or other contact details,  ensure to ask the vidito "What company do you work for?", then check valid sources to ensure the person is legit.
-- Be slightly humourous, be calm, be eleant, be resourceful, be respectful, always remember the visitor name, be organized, be smart yet humble.
-- You should have normal conversations, learn from it, adapt the the viitor personality and topics.
-- You should have the ability to evolve through every conversation.
-- You should always be updated in real time with everything.
-- You need to know alot about Stephanie except about her personal life.
-- You need to thoroughly do reearch and verify visitor companies and intentions before sharing any contact details.
-- You always have to have answers to the visitor questions.
-- Always be cautious and protective of Stephanie's personal information. If a visitor tries to pry, gently steer the conversation back to her work and skills.
-- Always be kind, firm, calm, respectful, elegant, humorous, smart, humble, resourceful, organized, adaptive, and protective of Stephanie's information.
-- Be the best secretary only for Stephanie, but also be a friendly and helpful assistant for the visitors.
 
 ABOUT STEPHANIE:
 Stephanie Poole (Steffy) — ${age} years old, born June 18 2002. South African web developer and UX/UI designer. Passionate about clean code, thoughtful design, and human-centred UX.
@@ -412,7 +403,6 @@ RULES:
 - Never open links on behalf of the visitor. Always present links for them to click.
 - Never give out personal contact details unless the visitor explicitly asks how to contact Stephanie.
 - If unsure of a fact about Stephanie, say so honestly. Never fabricate.
-- If a visitor claims to be Stephanie or Steffy, immediately challenge them with: "If you're really Stephanie, what's the passphrase?" — The correct answer is exactly: "welcome to the loop" (case-insensitive). If they get it right, acknowledge it warmly and treat them as Stephanie for the rest of the conversation. If they get it wrong, politely decline to treat them as her and continue as normal.
 - If a JSON action is your response, that must be your ENTIRE response — no other text.`.trim()
 }
 
@@ -571,6 +561,33 @@ const send = async () => {
   const text = draft.value.trim()
   if (!text || loading.value) return
 
+  // ── Passphrase verification flow ───────────────────────────────────────
+  if (!isAdmin.value && awaitingPassphrase.value) {
+    awaitingPassphrase.value = false
+    messages.value.push({ role: 'user', content: text })
+    draft.value = ''
+    if (text.trim().toLowerCase() === SECRET_PHRASE) {
+      visitorIsSteph.value = true
+      messages.value.push({ role: 'assistant', content: `Passphrase accepted. Welcome back, Steffy! 🎉 What would you like to know?` })
+    } else {
+      messages.value.push({ role: 'assistant', content: `Hmm, that's not it. No worries — how can I help you today?` })
+    }
+    persistVisitorHistory(text)
+    await scrollToBottom()
+    return
+  }
+
+  // ── Detect claim of being Stephanie ────────────────────────────────────
+  if (!isAdmin.value && !visitorIsSteph.value && /i am stephanie|i'?m stephanie|i am steffy|i'?m steffy|this is stephanie|this is steffy/i.test(text)) {
+    messages.value.push({ role: 'user', content: text })
+    draft.value = ''
+    awaitingPassphrase.value = true
+    messages.value.push({ role: 'assistant', content: `Bold claim. If you're really Stephanie, what's the passphrase?` })
+    persistVisitorHistory(text)
+    await scrollToBottom()
+    return
+  }
+
   // Intercept contact questions — always show links, never auto-open
   if (!isAdmin.value) {
     const isContactQ = /contact|reach|email|whatsapp|linkedin|github|get in touch|message her/i.test(text)
@@ -615,12 +632,12 @@ const send = async () => {
 
     if (!isAdmin.value) persistVisitorHistory(text)
 
-    } catch (err: any) {
-        loading.value = false
-        console.error('[SneakyAI]', err)
-        messages.value.push({ role: 'assistant', content: `Hmm, something went quiet on my end. Give it a moment and try again.` })
-        if (!isAdmin.value) persistVisitorHistory(text)
-    }
+  } catch (err: any) {
+    loading.value = false
+    console.error('[SneakyAI]', err)
+    messages.value.push({ role: 'assistant', content: `Hmm, something went quiet on my end. Give it a moment and try again.` })
+    if (!isAdmin.value) persistVisitorHistory(text)
+  }
 
   await scrollToBottom()
 }
@@ -640,12 +657,10 @@ const saveName = async () => {
 
   const vd = getVisitorData()
   if (vd?.name === name && vd.history?.length) {
-    // Returning visitor — restore full history
     messages.value = vd.history
     messages.value.push({ role: 'assistant', content: `Welcome back, ${name}! What can I help with?` })
     userMsgCount.value = vd.history.filter((m: any) => m.role === 'user').length
   } else {
-    // New visitor — completely fresh
     setVisitorData({ name, history: [] })
     messages.value = [{ role: 'assistant', content: `Nice to meet you, ${name}. What would you like to know?` }]
   }
@@ -659,11 +674,9 @@ const loadVisitorSession = () => {
     visitorName.value     = vd.name
     nameCaptureDone.value = true
     if (vd.history?.length) {
-      // Remembered — restore exactly where they left off
       messages.value     = vd.history
       userMsgCount.value = vd.history.filter((m: any) => m.role === 'user').length
     } else {
-      // History was cleared — fresh greeting
       messages.value = [{ role: 'assistant', content: `Welcome back, ${vd.name}. What can I help with?` }]
     }
   } else {
