@@ -25,13 +25,11 @@
             <p class="s-sub">{{ isAdmin && adminVerified ? 'Logged in as Steffy' : (visitorName ? `Hi, ${visitorName}` : 'Ask me anything') }}</p>
           </div>
           <div class="header-actions">
-            <!-- Visitor clear button -->
             <button v-if="messages.length > 0 && !isAdmin" class="action-btn" @click="clearChat" title="Clear chat">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
               </svg>
             </button>
-            <!-- Admin clear button (chat only) -->
             <button v-if="messages.length > 0 && isAdmin && adminVerified && activeAdminTab === 'chat'" class="action-btn" @click="clearAdminChat" title="Clear chat">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
@@ -182,7 +180,7 @@ const open          = ref(false)
 const isAdmin       = ref(false)
 const adminVerified = ref(false)
 
-// ── Passphrase — must respond: "Welcome to the Loop" ──────────────────────
+// ── Admin passphrase ───────────────────────────────────────────────────────
 const SECRET_PHRASE      = 'welcome to the loop'
 const passphraseInput    = ref('')
 const passphraseError    = ref(false)
@@ -199,7 +197,7 @@ const verifyPassphrase = () => {
     const stored = getAdminChat()
     messages.value = stored.length ? stored : [{
       role: 'assistant',
-      content: `Access granted. Hey Steffy! 👋\n\nChat here to update your info, or use the **Info** and **XP** tabs to edit directly.\n\nExamples:\n• "Remember that I'm now at XYZ"\n• "Update my availability to open for freelance"\n• "Forget what I said about Y"`
+      content: `Access granted. Hey Steffy! 👋\n\nChat here to update your info, or use the **Info** and **XP** tabs to edit directly.\n\nExamples:\n• "Remember that I'm now at XYZ"\n• "Update my availability to open for freelance"\n• "Forget what I said about Y"\n• "Clear all visitor chats and names"`
     }]
     activeAdminTab.value = 'chat'
   } else {
@@ -290,26 +288,61 @@ const clearVisitors = () => {
   visitorLog.value = []
 }
 
-// Clears visitor messages + stored history
 const clearChat = () => {
   messages.value = []
   const vd = getVisitorData()
   if (vd) setVisitorData({ ...vd, history: [] })
 }
 
-// Clears only admin chat — knowledge/experience untouched
 const clearAdminChat = () => {
   messages.value = [{ role: 'assistant', content: 'Chat cleared. What would you like to update?' }]
   setAdminChat(messages.value)
 }
 
-// ── State ──────────────────────────────────────────────────────────────────
+// ── Visitor passphrase state ───────────────────────────────────────────────
 const visitorIsSteph     = ref(false)
 const awaitingPassphrase = ref(false)
-const visitorName        = ref('')
-const nameInput          = ref('')
-const nameCaptureDone    = ref(false)
-const userMsgCount       = ref(0)
+
+// ── Wrong passphrase — randomised humorous responses ──────────────────────
+const wrongPassphraseResponse = (name: string | undefined): string => {
+  const n = name ? `, ${name}` : ''
+  const opts = [
+    `Nice try${n} 😄 Very bold of you, I'll give you that. Now, how can I actually help you today?`,
+    `Haha${n}! A for effort, truly. That's not it though — shall we get back to business?`,
+    `Ooh, close${n}! (Not really 😂.) You gave it a shot. What can I help you with?`,
+    `That's adorable${n}, honestly. Wrong, but adorable. What would you like to know?`,
+    `lol${n} — nice attempt! That passphrase wasn't quite right. Let's continue, shall we?`,
+    `I admire the confidence${n}, but nope! 😏 What can I help you with today?`,
+  ]
+  return opts[Math.floor(Math.random() * opts.length)]!
+}
+
+// ── Detect visitor claiming to be Stephanie ────────────────────────────────
+const isClaimingToBeSteph = (text: string): boolean => {
+  const t = text.toLowerCase().trim()
+  return [
+    /\bi'?m stephanie\b/,
+    /\bi am stephanie\b/,
+    /\bthis is stephanie\b/,
+    /\bi'?m steffy\b/,
+    /\bi am steffy\b/,
+    /\bthis is steffy\b/,
+    /\bit'?s stephanie\b/,
+    /\bit is stephanie\b/,
+    /\bit'?s steffy\b/,
+    /\bit is steffy\b/,
+    /\bstephanie here\b/,
+    /\bsteffy here\b/,
+    /\bmy name is stephanie\b/,
+    /\bmy name is steffy\b/,
+  ].some(p => p.test(t))
+}
+
+// ── State ──────────────────────────────────────────────────────────────────
+const visitorName     = ref('')
+const nameInput       = ref('')
+const nameCaptureDone = ref(false)
+const userMsgCount    = ref(0)
 
 const adminTabs = [
   { key: 'chat',       label: '💬 Chat' },
@@ -366,19 +399,16 @@ ROLE & TONE:
 - You can discuss Stephanie's work, skills, projects, and availability.
 - Do NOT mention REST APIs, backend infrastructure, or technical site details.
 - You are READ-ONLY. You cannot store, update, or change any information.
-- You can only share what you currently know, in the moment.
 - Never speculate or make up info about Stephanie. If unsure, say so honestly.
-- When asked personal questions (e.g. "Where does she live?" "is she single?"), respond with: "I'm here to talk about Stephanie's work and skills. For personal questions, it's best to reach out to her directly."
+- When asked personal questions (e.g. "Where does she live?" "is she single?"), respond with: "I'm here to talk about Stephanie's work and skills — personal questions are off the table."
 - When asked for contact details, politely ask who they are and what they're reaching out about before sharing anything.
-- Always be cautious and protective of Stephanie's personal information. If a visitor tries to pry, gently steer the conversation back to her work and skills.
-- Always be kind, firm, calm, respectful, elegant, humorous, smart, humble, resourceful, organized, adaptive, and protective of Stephanie's information.
-- Be the best secretary only for Stephanie, but also a friendly and helpful assistant for visitors.
+- Always be cautious and protective of Stephanie's personal information.
 
 LANGUAGE:
 - You ALWAYS respond in English. No exceptions.
 - Do NOT mirror or match the visitor's language automatically.
-- The ONLY time you switch languages is if the visitor EXPLICITLY asks you to translate or speak in another language (e.g. "Translate that to Afrikaans"). In that case, switch for that part only, then continue in English.
-- Even if the visitor writes to you in another language, respond in English and politely let them know you can translate if they'd like.
+- The ONLY time you switch languages is if the visitor EXPLICITLY asks you to translate or speak in another language. In that case, switch for that part only, then continue in English.
+- Even if the visitor writes to you in another language, respond in English and politely offer to translate.
 
 ABOUT STEPHANIE:
 Stephanie Poole (Steffy) — ${age} years old, born June 18 2002. South African web developer and UX/UI designer. Passionate about clean code, thoughtful design, and human-centred UX.
@@ -387,7 +417,7 @@ Portfolio: Home, About, CV, Playground, Figma, Contact.
 
 ${experience ? `EXPERIENCE:\n${experience}\n` : ''}${knowledge ? `ADDITIONAL INFO:\n${knowledge}\n` : ''}
 
-CONTACT — if a visitor asks how to contact or reach Stephanie, respond with exactly this (you may translate surrounding prose but keep links/numbers verbatim):
+CONTACT — if a visitor asks how to contact or reach Stephanie, respond with exactly this:
 Here's how to reach Stephanie:
 
 - **WhatsApp** — [+27 74 628 2617](https://wa.me/27746282617)
@@ -427,20 +457,22 @@ LANGUAGE:
 - Always respond in the same language Steffy uses. Afrikaans → Afrikaans. English → English. Follow her exactly.
 
 BEHAVIOUR:
-- Be direct and concise. Confirm all save/remove actions in one short sentence.
-- When Steffy tells you to remember or add something, store it immediately using the correct JSON command.
+- Be direct and concise. Confirm all save/remove/clear actions in one short sentence.
+- When Steffy tells you to remember or add something, store it using the correct JSON command.
 - When she wants to remove or forget something, use the correct JSON remove command.
+- When she asks to clear all chats, names or visitor history, use the clear_all_visitors command.
 - For regular conversation or questions, respond naturally — no JSON.
-- Always confirm in plain language what you saved or removed.
 
-COMMANDS — use ONLY for storing or removing info. When used, this must be your ENTIRE response (no extra text):
+COMMANDS — when used, this must be your ENTIRE response (no extra text):
 {"action":"update_knowledge","content":"exact text to add"}
 {"action":"remove_knowledge","content":"exact text to remove"}
 {"action":"update_experience","content":"exact text to add"}
 {"action":"remove_experience","content":"exact text to remove"}
+{"action":"clear_all_visitors"}
 
 Trigger STORE on: "remember…", "I'm now…", "update…", "add…", "my new project is…", "learn that…", "note that…", "save that…"
 Trigger REMOVE on: "forget…", "remove…", "delete…", "don't say…", "take out…", "erase…"
+Trigger CLEAR ALL on: "clear all chats", "clear all history", "delete all visitors", "wipe visitor data", "reset visitors", "clear visitor names", "clear everything"
 
 IMPORTANT: Regular conversation = natural reply, NO JSON ever.`.trim()
 }
@@ -501,8 +533,17 @@ const handleAction = (raw: string): boolean => {
     return true
   }
 
-  // Admin-only write actions — hard blocked unless passphrase verified
+  // Admin-only write actions
   if (!adminVerified.value) return false
+
+  if (json.action === 'clear_all_visitors') {
+    try { localStorage.removeItem(KEYS.visitor)    } catch {}
+    try { localStorage.removeItem(KEYS.visitorLog) } catch {}
+    visitorLog.value = []
+    messages.value.push({ role: 'assistant', content: '🗑 Done — all visitor names, chats and history have been cleared.' })
+    setAdminChat(messages.value)
+    return true
+  }
 
   if (json.action === 'update_knowledge' && json.content) {
     const existing = getKnowledge()
@@ -561,34 +602,43 @@ const send = async () => {
   const text = draft.value.trim()
   if (!text || loading.value) return
 
-  // ── Passphrase verification flow ───────────────────────────────────────
+  // ── 1. Passphrase answer — runs FIRST while awaiting ──────────────────
   if (!isAdmin.value && awaitingPassphrase.value) {
     awaitingPassphrase.value = false
     messages.value.push({ role: 'user', content: text })
     draft.value = ''
     if (text.trim().toLowerCase() === SECRET_PHRASE) {
       visitorIsSteph.value = true
-      messages.value.push({ role: 'assistant', content: `Passphrase accepted. Welcome back, Steffy! 🎉 What would you like to know?` })
+      messages.value.push({
+        role: 'assistant',
+        content: `Passphrase accepted. ✅ Welcome back, Steffy! 🎉 Always a pleasure having the boss around. What would you like to know?`
+      })
     } else {
-      messages.value.push({ role: 'assistant', content: `Hmm, that's not it. No worries — how can I help you today?` })
+      messages.value.push({
+        role: 'assistant',
+        content: wrongPassphraseResponse(visitorName.value)
+      })
     }
     persistVisitorHistory(text)
     await scrollToBottom()
     return
   }
 
-  // ── Detect claim of being Stephanie ────────────────────────────────────
-  if (!isAdmin.value && !visitorIsSteph.value && /i am stephanie|i'?m stephanie|i am steffy|i'?m steffy|this is stephanie|this is steffy/i.test(text)) {
+  // ── 2. Stephanie identity claim — intercept BEFORE anything else ───────
+  if (!isAdmin.value && !visitorIsSteph.value && isClaimingToBeSteph(text)) {
     messages.value.push({ role: 'user', content: text })
     draft.value = ''
     awaitingPassphrase.value = true
-    messages.value.push({ role: 'assistant', content: `Bold claim. If you're really Stephanie, what's the passphrase?` })
+    messages.value.push({
+      role: 'assistant',
+      content: `Bold claim. 👀 If you're really Stephanie, you'll know the passphrase — what is it?`
+    })
     persistVisitorHistory(text)
     await scrollToBottom()
     return
   }
 
-  // Intercept contact questions — always show links, never auto-open
+  // ── 3. Contact intercept ───────────────────────────────────────────────
   if (!isAdmin.value) {
     const isContactQ = /contact|reach|email|whatsapp|linkedin|github|get in touch|message her/i.test(text)
     if (isContactQ) {
@@ -602,6 +652,7 @@ const send = async () => {
     }
   }
 
+  // ── 4. Normal AI flow ──────────────────────────────────────────────────
   messages.value.push({ role: 'user', content: text })
   draft.value = ''
   if (!isAdmin.value) userMsgCount.value++
@@ -647,7 +698,7 @@ const sendQuick = (text: string) => { draft.value = text; send() }
 const saveKnowledge  = () => { setKnowledge(knowledgeText.value);   keSaved.value = true; setTimeout(() => { keSaved.value  = false }, 2500) }
 const saveExperience = () => { setExperience(experienceText.value); expSaved.value = true; setTimeout(() => { expSaved.value = false }, 2500) }
 
-// ── Save name — restore history if returning visitor, fresh start if new ───
+// ── Save name ──────────────────────────────────────────────────────────────
 const saveName = async () => {
   const name = nameInput.value.trim()
   if (!name) return

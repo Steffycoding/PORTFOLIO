@@ -179,6 +179,7 @@ onUnmounted(() => { window.removeEventListener('resize', checkMobile) })
   font-weight: 700;
   letter-spacing: 0.1em;
   background: linear-gradient(135deg, #137fbe 30%, #2fbaff);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   position: relative;
