@@ -273,9 +273,9 @@ const clearAdminChat  = () => { messages.value = [{ role: 'assistant', content: 
 const visitorIsSteph     = ref(false)
 const awaitingPassphrase = ref(false)
 
-const wrongPassphraseResponse = (name: string | undefined): string => {
+const wrongPassphraseResponse = (name?: string): string => {
   const n = name ? `, ${name}` : ''
-  const opts = [
+  const opts: string[] = [
     `Nice try${n} 😄 Very bold of you, I'll give you that. Now, how can I actually help you today?`,
     `Haha${n}! A for effort, truly. That's not it though — shall we get back to business?`,
     `Ooh, close${n}! (Not really 😂.) You gave it a shot. What can I help you with?`,
@@ -495,9 +495,9 @@ const handleAction = (raw: string): boolean => {
     remove_experience: () => { const n = getExperience().split('\n\n').filter(p => !p.toLowerCase().includes(json.content.toLowerCase())).join('\n\n').trim(); setExperience(n); experienceText.value = n; messages.value.push({ role: 'assistant', content: '🗑 Removed from Experience.' }) },
   }
 
-  const actionFn = knowledgeActions[json.action]
-  if (actionFn) {
-    actionFn()
+  const handler = knowledgeActions[json.action]
+  if (handler) {
+    handler()
     setAdminChat(messages.value)
     return true
   }
@@ -586,8 +586,14 @@ const send = async () => {
     if (!isAdmin.value) persistVisitorHistory(text)
   } catch (err: any) {
     loading.value = false
-    console.error('[SneakyAI]', err)
-    messages.value.push({ role: 'assistant', content: `Hmm, something went quiet on my end. Give it a moment and try again.` })
+    const status = err?.response?.status ?? err?.statusCode ?? null
+    const detail = err?.data?.error?.message ?? err?.data?.message ?? err?.message ?? ''
+    console.error('[SneakyAI] status:', status, '| detail:', detail, '| raw:', err)
+    const msg = status === 400 ? `Request rejected (400) — likely a body encoding issue on the server. Check /api/chat logs. Detail: ${detail}`
+              : status === 429 ? `Rate limited — too many requests. Try again in a moment.`
+              : status === 500 ? `Server error (500) — check your /api/chat route.`
+              : `Hmm, something went quiet on my end. Give it a moment and try again.`
+    messages.value.push({ role: 'assistant', content: msg })
     if (!isAdmin.value) persistVisitorHistory(text)
   }
 
